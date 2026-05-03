@@ -800,9 +800,10 @@ code.inline { font-family: 'Geist Mono', monospace; font-size: 11px; background:
   margin-left: 4px;
 }
 
-.studio-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; min-width: 0; }
-.studio-layout > * { min-width: 0; }   /* 子元素也要 min-width:0，否则 grid 会按内容自然宽度撑大 */
-@media (max-width: 1000px) { .studio-layout { grid-template-columns: 1fr; } }
+/* grid 列必须用 minmax(0, 1fr)，否则 1fr 会回退到 min-content（=iframe 自然宽度 1080px）撑爆容器 */
+.studio-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: stretch; min-width: 0; }
+.studio-layout > * { min-width: 0; }
+@media (max-width: 1000px) { .studio-layout { grid-template-columns: minmax(0, 1fr); } }
 
 .studio-panel {
   background: var(--card);

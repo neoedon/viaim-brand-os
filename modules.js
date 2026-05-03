@@ -2815,7 +2815,7 @@ function studioL5(body, ctx) {
   const curSize = types.find((t) => t.id === curType)?.size || { w: 1440, h: 900 };
 
   body.innerHTML = `
-    <div class="studio-layout" style="grid-template-columns:380px 1fr;">
+    <div class="studio-layout" style="grid-template-columns:380px minmax(0, 1fr);">
       <div class="card flat" style="padding:20px;">
         ${fromSkill ? `<div class="callout blue" style="margin-bottom:10px;">已加载技能 <b>${esc(fromSkill)}</b></div>` : ''}
         <div class="field"><label>原型类型</label>
@@ -2978,7 +2978,7 @@ function studioL6(body, ctx) {
       <button class="l6-mode ${mode==='deck'?'active':''}" data-l6mode="deck">▤▤▤ 多张连排（自动排版）</button>
     </div>
 
-    <div class="studio-layout" style="grid-template-columns:380px 1fr;">
+    <div class="studio-layout" style="grid-template-columns:380px minmax(0, 1fr);">
       <div class="card flat" style="padding:20px;">
         ${mode === 'single' ? renderL6Single() : renderL6Deck(pf)}
       </div>
