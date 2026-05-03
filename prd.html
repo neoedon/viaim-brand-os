@@ -1,0 +1,2385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>viaim Brand OS · PRD v0.1</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --paper: #f7f5f0;
+  --paper-soft: #f4f3ee;
+  --card: #ffffff;
+  --ink: #18181b;
+  --ink-soft: #3f3f46;
+  --ink-mid: #52525b;
+  --ink-mute: #71717a;
+  --hint: #a1a1aa;
+  --line: #d4d4d8;
+  --line-soft: #e4e4e7;
+  --bg-soft: #f4f3ee;
+  --bg-softer: #ecebe5;
+  --accent: #b8410c;
+  --accent-soft: #fef3ec;
+  --accent-line: #fed7aa;
+  --green: #4d7c0f;
+  --green-soft: #f7fee7;
+  --red: #b91c1c;
+  --red-soft: #fef2f2;
+  --amber: #b45309;
+  --amber-soft: #fffbeb;
+  --blue: #1e40af;
+  --blue-soft: #eff6ff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Geist', -apple-system, system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.mono { font-family: 'Geist Mono', monospace; font-feature-settings: "ss01"; letter-spacing: -0.005em; }
+
+/* ============= LAYOUT ============= */
+.app {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+  max-width: 1480px;
+  margin: 0 auto;
+}
+
+/* ============= SIDEBAR ============= */
+aside.toc {
+  border-right: 1px solid var(--line-soft);
+  padding: 32px 24px 48px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--paper);
+}
+
+aside.toc::-webkit-scrollbar { width: 4px; }
+aside.toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+.toc-head {
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.toc-tag {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.toc-title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.toc-meta {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-mute);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+.toc-meta b { color: var(--ink); font-weight: 500; }
+
+.toc-section {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-mute);
+  margin: 20px 0 6px;
+  padding-left: 4px;
+}
+
+.toc-link {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 5px 8px;
+  font-size: 12.5px;
+  color: var(--ink-mid);
+  border-radius: 4px;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  margin-left: -2px;
+  line-height: 1.4;
+  transition: all 0.12s;
+  cursor: pointer;
+}
+
+.toc-link .num {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  color: var(--hint);
+  min-width: 28px;
+}
+
+.toc-link:hover {
+  background: var(--bg-soft);
+  color: var(--ink);
+}
+
+.toc-link.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-left-color: var(--accent);
+  font-weight: 500;
+}
+
+.toc-link.active .num { color: var(--accent); }
+
+.toc-sub {
+  display: block;
+  padding: 3px 8px 3px 36px;
+  font-size: 11.5px;
+  color: var(--ink-mute);
+  text-decoration: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.toc-sub:hover { color: var(--ink); }
+.toc-sub.active { color: var(--accent); font-weight: 500; }
+
+/* ============= MAIN ============= */
+main.content {
+  padding: 64px 56px 120px;
+  max-width: 980px;
+}
+
+@media (max-width: 1100px) {
+  .app { grid-template-columns: 1fr; }
+  aside.toc {
+    position: relative;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--line-soft);
+    padding: 24px;
+  }
+  main.content { padding: 32px 24px 80px; }
+}
+
+/* ============= COVER ============= */
+.cover {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 40px;
+  margin-bottom: 56px;
+}
+
+.cover-tag {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.cover h1 {
+  font-size: 44px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  margin-bottom: 10px;
+}
+
+.cover .sub {
+  font-size: 17px;
+  color: var(--ink-mid);
+  font-weight: 400;
+  margin-bottom: 24px;
+  letter-spacing: -0.01em;
+}
+
+.cover-meta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding-top: 24px;
+  border-top: 1px dashed var(--line);
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+}
+
+.cover-meta .k {
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.cover-meta .v {
+  color: var(--ink);
+  font-weight: 500;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .cover h1 { font-size: 32px; }
+  .cover-meta { grid-template-columns: 1fr 1fr; }
+}
+
+/* ============= SECTION ============= */
+section.chapter {
+  margin-bottom: 80px;
+  scroll-margin-top: 24px;
+}
+
+.ch-num {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.ch-title {
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.ch-lead {
+  font-size: 15px;
+  color: var(--ink-mid);
+  line-height: 1.65;
+  margin-bottom: 32px;
+  max-width: 720px;
+}
+
+h3.sub-title {
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  margin: 36px 0 12px;
+  padding-top: 12px;
+  scroll-margin-top: 24px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+h3.sub-title .id {
+  font-family: 'Geist Mono', monospace;
+  font-size: 12px;
+  color: var(--ink-mute);
+  font-weight: 400;
+}
+
+h4.minor-title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  margin: 24px 0 8px;
+}
+
+p {
+  margin-bottom: 14px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+p b, strong { color: var(--ink); font-weight: 600; }
+
+/* ============= LISTS (limited use, for spec only) ============= */
+ul.spec-list, ol.spec-list {
+  margin: 8px 0 16px 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.spec-list li {
+  position: relative;
+  padding-left: 22px;
+  margin-bottom: 8px;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+
+.spec-list li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--hint);
+  font-family: 'Geist Mono', monospace;
+}
+
+ol.spec-list { counter-reset: lst; }
+ol.spec-list li::before {
+  counter-increment: lst;
+  content: counter(lst, decimal-leading-zero);
+  font-size: 10px;
+  font-family: 'Geist Mono', monospace;
+  color: var(--accent);
+  top: 4px;
+}
+ol.spec-list li { padding-left: 30px; }
+
+/* ============= CALLOUT ============= */
+.callout {
+  background: var(--bg-soft);
+  border-left: 3px solid var(--accent);
+  padding: 16px 20px;
+  border-radius: 0 6px 6px 0;
+  margin: 20px 0;
+}
+
+.callout-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.callout p { margin-bottom: 6px; color: var(--ink); font-size: 14px; }
+.callout p:last-child { margin-bottom: 0; }
+
+.callout.green { border-left-color: var(--green); }
+.callout.green .callout-label { color: var(--green); }
+.callout.amber { border-left-color: var(--amber); }
+.callout.amber .callout-label { color: var(--amber); }
+.callout.blue { border-left-color: var(--blue); }
+.callout.blue .callout-label { color: var(--blue); }
+
+/* ============= STATS BAR ============= */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--card);
+  margin: 24px 0 32px;
+  overflow: hidden;
+}
+
+.stat {
+  padding: 18px 20px;
+  border-right: 1px solid var(--line-soft);
+}
+
+.stat:last-child { border-right: none; }
+
+.stat .v {
+  font-family: 'Geist Mono', monospace;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.stat .k {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 768px) {
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stat:nth-child(2) { border-right: none; }
+  .stat:nth-child(1), .stat:nth-child(2) { border-bottom: 1px solid var(--line-soft); }
+}
+
+/* ============= TABLE ============= */
+table.spec {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  font-size: 13px;
+  margin: 16px 0 24px;
+}
+
+table.spec th {
+  background: var(--bg-soft);
+  text-align: left;
+  padding: 11px 16px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  letter-spacing: 0.06em;
+  font-weight: 500;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+table.spec td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line-soft);
+  vertical-align: top;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+table.spec tr:last-child td { border-bottom: none; }
+
+table.spec td b { color: var(--ink); font-weight: 600; }
+table.spec td .mono { font-size: 12px; }
+
+.priority-pill {
+  display: inline-block;
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+.priority-pill.p0 { background: var(--accent); color: white; }
+.priority-pill.p1 { background: var(--amber); color: white; }
+.priority-pill.p2 { background: var(--ink-mute); color: white; }
+.priority-pill.p3 { background: var(--bg-soft); color: var(--ink-mute); border: 1px solid var(--line); }
+
+/* ============= MODULE CARD ============= */
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin: 20px 0;
+}
+
+@media (max-width: 768px) {
+  .module-grid { grid-template-columns: 1fr; }
+}
+
+.mod-card {
+  border: 1px solid var(--line-soft);
+  border-radius: 6px;
+  padding: 16px 18px;
+  background: var(--card);
+}
+
+.mod-card .head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.mod-card .name {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+.mod-card .id {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-mute);
+  letter-spacing: 0.04em;
+}
+
+.mod-card .desc {
+  font-size: 13px;
+  color: var(--ink-mid);
+  line-height: 1.55;
+  margin-bottom: 8px;
+}
+
+.mod-card .meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 2px 7px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-mute);
+  background: var(--paper-soft);
+}
+
+.tag.p0 { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.tag.green { border-color: var(--green); color: var(--green); background: var(--green-soft); }
+.tag.amber { border-color: var(--amber); color: var(--amber); background: var(--amber-soft); }
+
+/* ============= CODE BLOCK ============= */
+pre.code {
+  background: #18181b;
+  color: #e4e4e7;
+  border-radius: 6px;
+  padding: 18px 22px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 12px;
+  line-height: 1.65;
+  overflow-x: auto;
+  margin: 16px 0 24px;
+  border: 1px solid #27272a;
+}
+
+pre.code .c { color: #71717a; font-style: italic; } /* comment */
+pre.code .k { color: #fbbf24; } /* key */
+pre.code .s { color: #86efac; } /* string */
+pre.code .n { color: #93c5fd; } /* number/literal */
+pre.code .p { color: #d4d4d8; } /* punctuation */
+pre.code .t { color: #f9a8d4; } /* type annotation */
+
+code.inline {
+  font-family: 'Geist Mono', monospace;
+  font-size: 12px;
+  background: var(--bg-soft);
+  padding: 1px 6px;
+  border-radius: 3px;
+  color: var(--ink);
+  border: 1px solid var(--line-soft);
+}
+
+/* ============= FLOW / DIAGRAM ============= */
+.flow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 20px 0 28px;
+}
+
+@media (max-width: 768px) { .flow { grid-template-columns: 1fr 1fr; } }
+
+.flow-step {
+  border: 1px solid var(--line-soft);
+  background: var(--card);
+  padding: 14px;
+  border-radius: 6px;
+  position: relative;
+}
+
+.flow-step .step-num {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.flow-step .step-name {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.flow-step .step-desc {
+  font-size: 11px;
+  color: var(--ink-mute);
+  line-height: 1.5;
+  font-family: 'Geist Mono', monospace;
+}
+
+/* ============= MODULE SECTION ============= */
+.module-section {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  background: var(--card);
+  scroll-margin-top: 24px;
+}
+
+.module-section .head {
+  border-bottom: 1px dashed var(--line-soft);
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.module-section .head .info {
+  flex: 1;
+}
+
+.module-section .head .info .badge {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+
+.module-section .head h3 {
+  font-size: 21px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  margin: 0 0 6px;
+}
+
+.module-section .head .desc {
+  font-size: 13.5px;
+  color: var(--ink-mid);
+  line-height: 1.6;
+}
+
+.module-section .head .meta-pills {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+/* ============= ROADMAP ============= */
+.roadmap {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.phase-row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 0;
+  border: 1px solid var(--line-soft);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--card);
+}
+
+.phase-bar {
+  background: var(--bg-softer);
+  padding: 16px 18px;
+  border-right: 1px solid var(--line-soft);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.phase-bar .ph-id {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.phase-bar .ph-name {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.phase-bar .ph-time {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-mute);
+}
+
+.phase-body {
+  padding: 14px 18px;
+}
+
+.phase-body .deliv {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.phase-body .deliv b { color: var(--ink); }
+
+.phase-body .modules-tag {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+/* ============= TAB GROUP (for L1-L4) ============= */
+.tab-group {
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: var(--card);
+  margin: 20px 0 24px;
+  overflow: hidden;
+}
+
+.tab-bar {
+  display: flex;
+  border-bottom: 1px solid var(--line-soft);
+  background: var(--bg-soft);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 12px 16px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-mute);
+  cursor: pointer;
+  border-right: 1px solid var(--line-soft);
+  user-select: none;
+  transition: all 0.12s;
+  text-align: left;
+  background: transparent;
+  border-top: 2px solid transparent;
+}
+
+.tab-btn:last-child { border-right: none; }
+
+.tab-btn:hover { color: var(--ink); background: var(--card); }
+
+.tab-btn.active {
+  background: var(--card);
+  color: var(--accent);
+  border-top-color: var(--accent);
+  font-weight: 500;
+}
+
+.tab-btn .lvl {
+  display: block;
+  color: var(--ink);
+  font-size: 13px;
+  text-transform: none;
+  letter-spacing: -0.005em;
+  font-weight: 500;
+  margin-top: 3px;
+  font-family: 'Geist', sans-serif;
+}
+
+.tab-btn.active .lvl { color: var(--accent); }
+
+.tab-pane {
+  display: none;
+  padding: 24px 28px;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.tab-pane.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tab-pane h5 {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 16px 0 8px;
+  letter-spacing: -0.005em;
+}
+
+.tab-pane h5:first-child { margin-top: 0; }
+
+/* ============= QUESTION CARD ============= */
+.q-card {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 16px 20px;
+  background: var(--card);
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.q-card .q-num {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  color: var(--hint);
+  letter-spacing: 0.08em;
+}
+
+.q-card .q-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.q-card .q-desc {
+  font-size: 13px;
+  color: var(--ink-mid);
+  line-height: 1.6;
+}
+
+.q-card .q-options {
+  margin-top: 10px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.q-card .q-option {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  padding: 4px 10px;
+  background: var(--bg-soft);
+  border-radius: 3px;
+  color: var(--ink-soft);
+  border: 1px solid var(--line-soft);
+}
+
+/* ============= NAV: SCROLLSPY ============= */
+.scrollspy-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--accent);
+  width: 0%;
+  z-index: 1000;
+  transition: width 0.1s;
+}
+
+/* ============= FOOTER ============= */
+.foot {
+  margin-top: 80px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-mute);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.foot b { color: var(--ink); font-weight: 500; }
+
+</style>
+</head>
+<body>
+
+<div class="scrollspy-progress" id="progress"></div>
+
+<div class="app">
+
+  <!-- ============= SIDEBAR ============= -->
+  <aside class="toc">
+    <div class="toc-head">
+      <div class="toc-tag">PRD · v0.1 · DRAFT</div>
+      <div class="toc-title">viaim Brand OS</div>
+      <div class="toc-meta">
+        <b>Tang × Claude</b><br>
+        Updated · <span class="mono">2026.05.02</span><br>
+        Status · <b style="color:var(--amber)">Pending Review</b>
+      </div>
+    </div>
+
+    <div class="toc-section">Foundation</div>
+    <a class="toc-link" href="#ch-0"><span class="num">00</span><span>文档信息</span></a>
+    <a class="toc-link" href="#ch-1"><span class="num">01</span><span>产品定位</span></a>
+    <a class="toc-link" href="#ch-2"><span class="num">02</span><span>用户与场景</span></a>
+    <a class="toc-link" href="#ch-3"><span class="num">03</span><span>形态决策</span></a>
+    <a class="toc-link" href="#ch-4"><span class="num">04</span><span>信息架构</span></a>
+
+    <div class="toc-section">Modules</div>
+    <a class="toc-link" href="#ch-5"><span class="num">05</span><span>模块需求</span></a>
+    <a class="toc-sub" href="#mod-brand">5.1 · Brand Source</a>
+    <a class="toc-sub" href="#mod-asset">5.2 · Asset Library</a>
+    <a class="toc-sub" href="#mod-studio">5.3 · Generation Studio</a>
+    <a class="toc-sub" href="#mod-compliance">5.4 · Compliance</a>
+    <a class="toc-sub" href="#mod-cmdk">5.5 · Command Palette</a>
+    <a class="toc-sub" href="#mod-figma">5.6 · Figma Plugin</a>
+    <a class="toc-sub" href="#mod-api">5.7 · API & SDK</a>
+    <a class="toc-sub" href="#mod-inbox">5.11 · Inspiration Pool ✦</a>
+
+    <div class="toc-section">Engineering</div>
+    <a class="toc-link" href="#ch-6"><span class="num">06</span><span>数据模型</span></a>
+    <a class="toc-link" href="#ch-7"><span class="num">07</span><span>技术架构</span></a>
+    <a class="toc-link" href="#ch-8"><span class="num">08</span><span>非功能需求</span></a>
+
+    <div class="toc-section">Delivery</div>
+    <a class="toc-link" href="#ch-9"><span class="num">09</span><span>Phase Roadmap</span></a>
+    <a class="toc-link" href="#ch-10"><span class="num">10</span><span>未决问题</span></a>
+    <a class="toc-link" href="#ch-11"><span class="num">11</span><span>附录</span></a>
+  </aside>
+
+  <!-- ============= MAIN ============= -->
+  <main class="content">
+
+    <!-- =================== COVER =================== -->
+    <header class="cover">
+      <div class="cover-tag">PRD · viaim · v0.1</div>
+      <h1>Brand OS</h1>
+      <p class="sub">面向 viaim 内部的品牌资产中台 · 把品牌系统从「人类可读」迁移到「机器可读」</p>
+      <div class="cover-meta">
+        <div><div class="k">Version</div><div class="v">v0.1 Draft</div></div>
+        <div><div class="k">Author</div><div class="v">Tang × Claude</div></div>
+        <div><div class="k">Audience</div><div class="v">viaim 设计部 · 工程</div></div>
+        <div><div class="k">Updated</div><div class="v">2026 · 05 · 02</div></div>
+      </div>
+    </header>
+
+    <!-- =================== CH 0 文档信息 =================== -->
+    <section class="chapter" id="ch-0">
+      <div class="ch-num">00 · meta</div>
+      <h2 class="ch-title">文档信息</h2>
+      <p class="ch-lead">这是 viaim Brand OS 项目的第一份 PRD。它确定了产品定位、用户优先级、形态决策、模块边界、以及 Phase 1 的最小可交付范围。</p>
+
+      <table class="spec">
+        <tr><th>项目代号</th><td><b>viaim Brand OS</b><span style="color:var(--ink-mute)"> · 内部代号</span></td></tr>
+        <tr><th>状态</th><td><span class="priority-pill p1">PENDING REVIEW</span> 待评审 · 含 5 项未决问题需对齐</td></tr>
+        <tr><th>关联项目</th><td>viaim 主产品（Vitana / Memory / Hub）· Aura / Mate 硬件视觉· HerE 概念视频</td></tr>
+        <tr><th>本版变更</th><td>v0.1 首发：确定形态决策为「管控优先 + cmd+K 命令面板」、明确 Phase 1 边界</td></tr>
+        <tr><th>读者建议</th><td>设计 lead → §1-§5 优先；工程 → §6-§8 优先；管理者 → §1·§9·§10</td></tr>
+        <tr><th>备份格式</th><td>HTML（主） · Word（doc 格式审阅） · Markdown（仓库版本控制）</td></tr>
+      </table>
+    </section>
+
+    <!-- =================== CH 1 产品定位 =================== -->
+    <section class="chapter" id="ch-1">
+      <div class="ch-num">01 · positioning</div>
+      <h2 class="ch-title">产品定位</h2>
+      <p class="ch-lead">先讲清楚这不是什么、是什么、为什么有差异化。这一章是后面所有功能取舍的基准。</p>
+
+      <h3 class="sub-title"><span class="id">1.1</span>不是中台，是 Brand OS</h3>
+      <p>「设计中台」这个词容易让人联想到「批量出图工厂」。我们做的不是这个。viaim Brand OS 的本质是：<b>把品牌系统从 Figma / PDF 这种人类可读、机器难解析的形态，迁移到一个机器可读、可版本化、可被多种生成管线消费的源（Source of Truth）</b>。这个源加上产品资产，加上生成层，构成一个 Brand Operating System。</p>
+      <p>它和 viaim 主产品「Memory OS」是同构的——都是把分散的资产收敛到一个语义层，让下游应用按需调用。一个管「记忆」，一个管「品牌」，方法论一致。</p>
+
+      <h3 class="sub-title"><span class="id">1.2</span>解决什么痛点</h3>
+      <p>当前 viaim 设计交付存在三个核心问题：</p>
+      <ol class="spec-list">
+        <li><b>设计品牌难统一。</b>同一品牌在不同沟通文档、Figma 库、第三方乙方手里漂移。新设计师上手要「问一圈」才知道色值是什么、留白多少。</li>
+        <li><b>大量重复劳动。</b>每个高频物料（社交卡、详情图、PRD 排版）每次都从零开始。3D 渲染图、产品资产散落在各人电脑里，难复用。</li>
+        <li><b>AI 工具效果不佳。</b>直接用 Lovart / 通用图像 API 出图，要么风格漂移、要么不像 Aura/Mate、要么文字渲染翻车。设计师宁愿手画。</li>
+      </ol>
+
+      <h3 class="sub-title"><span class="id">1.3</span>差异化锚点</h3>
+      <p>市面上没有任何单一产品满足完整需求。三类竞品，各有缺口：</p>
+
+      <table class="spec">
+        <thead>
+          <tr><th>竞品类型</th><th>代表</th><th>解决了什么</th><th>缺口</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>通用 AI 设计</b></td>
+            <td>Lovart · Recraft · Krea</td>
+            <td>精致度、模型路由、prompt 工程</td>
+            <td><b>不知道你的品牌是什么</b>。无法掌握 Aura/Mate 的官方资产、品牌色板、设计禁忌</td>
+          </tr>
+          <tr>
+            <td><b>开源 design-md 工具</b></td>
+            <td>Open Design · Open CoDesign</td>
+            <td>DESIGN.md schema · skill 协议 · prompt stack</td>
+            <td><b>没有 DAM、没有可视化后台、不做位图生成</b>。只能产出 HTML/Markdown 类「网页设计」</td>
+          </tr>
+          <tr>
+            <td><b>传统 DAM</b></td>
+            <td>Pimcore · ResourceSpace · AtroDAM</td>
+            <td>资产仓库、权限、版本控制</td>
+            <td><b>没有品牌 DNA、没有 AI 生成、对 LLM 不友好</b>。是仓库不是中台</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <div class="callout-label">差异化定位</div>
+        <p>Lovart 是「让所有人能生成精致图」，Brand OS 是「<b>让 viaim 品牌的图永远是 viaim 的样子</b>」。</p>
+        <p>不在「精致度」上跟通用工具比拼，而是在<b>品牌还原度 + 资产复用 + 工作流嵌入</b>上做到任何通用产品都不可能做到的事——因为它们不可能掌握 viaim 的内部资产。</p>
+      </div>
+
+      <h3 class="sub-title"><span class="id">1.4</span>v0.1 范围声明</h3>
+      <p>本 PRD 仅覆盖 <b>Phase 1（4-6 周）</b>的内部工具版本，目标用户是 viaim 设计部 + 部分 PM。Phase 2-4 仅在 §9 Roadmap 中给出方向，不展开实现细节。「产品化对外 SaaS」明确不在 v0.1 范围。</p>
+    </section>
+
+    <!-- =================== CH 2 用户与场景 =================== -->
+    <section class="chapter" id="ch-2">
+      <div class="ch-num">02 · users & scenarios</div>
+      <h2 class="ch-title">用户分层与典型场景</h2>
+      <p class="ch-lead">用户优先级是后续所有形态决策的根。优先级排序在评审中已确认。</p>
+
+      <h3 class="sub-title"><span class="id">2.1</span>用户优先级（已对齐）</h3>
+
+      <table class="spec">
+        <thead>
+          <tr><th style="width:32px;">#</th><th>用户角色</th><th>核心使用姿势</th><th>v0.1 必须服务好</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="priority-pill p0">1</span></td><td><b>内部设计师</b><br><span style="color:var(--ink-mute);font-size:12px;">Brand · UI · 电商 · 创意</span></td><td>调用品牌资产、生成半成品后在 Figma 收尾、维护品牌源</td><td><b>是</b> · 核心人群</td></tr>
+          <tr><td><span class="priority-pill p1">2</span></td><td><b>非设计角色</b><br><span style="color:var(--ink-mute);font-size:12px;">PM · 运营 · 市场</span></td><td>输入文案、选场景、直接拿合规图去用</td><td><b>是</b> · MVP 已涵盖核心 use case</td></tr>
+          <tr><td><span class="priority-pill p2">3</span></td><td><b>外部 agency</b><br><span style="color:var(--ink-mute);font-size:12px;">视频/平面/3D 乙方</span></td><td>拿到「项目级 design brief MD」作为创作约束</td><td>部分 · L2 Mini MD 模块覆盖</td></tr>
+          <tr><td><span class="priority-pill p3">4</span></td><td><b>viaim 自家 AI 产品</b><br><span style="color:var(--ink-mute);font-size:12px;">Vitana / Memory / Hub</span></td><td>通过 API 调用 brand context 渲染品牌一致 UI</td><td>不在 v0.1 · Phase 3 接入</td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-title"><span class="id">2.2</span>典型场景剧本</h3>
+
+      <h4 class="minor-title">场景 A · 设计师做 Aura 双 11 微博海报</h4>
+      <p>设计师打开 Brand Console → 进入 Generate Studio → 选「L3 模板 / 社交卡」→ 选 Aura 渲染图 → 输入文案 → 系统自动注入 brand tokens、字体、留白规则 → 实时预览 → 合规 lint 通过 → 导出 PNG + Figma 文件继续精修。<b>整个流程不超过 5 分钟</b>。</p>
+
+      <h4 class="minor-title">场景 B · PM 临时要 PRD 封面</h4>
+      <p>PM 按 <code class="inline">⌘ K</code> 召唤 → 输入「给 v0.4 PRD 做封面」→ 系统识别意图，跳到 L3 模板「文档封面」→ 用最近的一张 viaim 视觉作为参考 → 30 秒生成 → 直接用。<b>从不需要找设计师。</b></p>
+
+      <h4 class="minor-title">场景 C · agency 接到 viaim 春节项目</h4>
+      <p>设计 lead 进入 Generate Studio → 选「L2 Mini MD」→ 填项目信息（场景、时长、调性、产品）→ 系统组装出一份包含 brand 摘要、tokens 子集、参考资产链接的 <code class="inline">brief.md</code> → 发给 agency。<b>agency 不再追问"我们品牌色到底是什么"</b>。</p>
+
+      <h4 class="minor-title">场景 D · Brand v1.2 → v1.3 升级</h4>
+      <p>品牌 lead 进入 Brand Source → 修改主色和字间距 → 系统自动跑「影响分析」（多少历史产物使用了旧 token）→ 创建 v1.3 草案 → 审批通过 → 发布 → 旧产物保留 v1.2 引用，新生成默认用 v1.3。<b>规范升级不再是"全员通知 + 各自记得改"</b>。</p>
+    </section>
+
+    <!-- =================== CH 3 形态决策 =================== -->
+    <section class="chapter" id="ch-3">
+      <div class="ch-num">03 · form decision</div>
+      <h2 class="ch-title">产品形态决策</h2>
+      <p class="ch-lead">在三个候选形态中（Brand Console / Studio Canvas / Intent Launcher），评审已选定<b>方案 A · 管控优先（Brand Console）</b>，并将 cmd+K 命令面板提升为 P0。</p>
+
+      <h3 class="sub-title"><span class="id">3.1</span>选择 Brand Console 的理由</h3>
+      <p>Brand Console 形态最契合三件事：</p>
+      <ol class="spec-list">
+        <li><b>用户优先级匹配。</b>设计师 + 非设计角色 + agency 三类用户都需要"按模块清晰分类"的入口。Studio Canvas（B）会把 PM 吓退；Intent Launcher（C）会让设计师缺乏控制感。Brand Console 是三方共识。</li>
+        <li><b>治理需求强。</b>品牌资产需要版本、审批、合规 lint 的全流程治理。这件事在画布形态（B）里只能是侧边面板，在 launcher 形态（C）里压根没位置。Brand Console 天生为治理而生。</li>
+        <li><b>未来产品化潜力。</b>SaaS 产品大多是 Brand Console 形态（Linear / Pimcore / Brand.ai）。从这里出发未来 Phase 4-5 产品化阻力最小。</li>
+      </ol>
+
+      <h3 class="sub-title"><span class="id">3.2</span>cmd+K 命令面板：P0 必做</h3>
+      <p>用户偏好键盘操作（macOS 重度用户）。但「快捷键」有两种产品哲学：</p>
+      <ol class="spec-list">
+        <li><b>Launcher-as-primary</b>（Raycast 派）：召唤即应用，无状态。不适合长会话场景。</li>
+        <li><b>Palette-on-top</b>（Linear / Notion / Figma 派）：完整有状态应用，但任何地方按 <code class="inline">⌘ K</code> 召唤搜索/命令面板。键盘党全程不碰鼠标，鼠标党也能用。</li>
+      </ol>
+      <p>v0.1 选择第二种。Brand Console 是主体，cmd+K 是无处不在的加速器。这个决策把 Command Palette 从「以后再加」提升到 <b>Phase 1 P0 模块</b>，单独立章（§5.5）设计。</p>
+
+      <h3 class="sub-title"><span class="id">3.3</span>Hybrid Path 演进</h3>
+      <p>v0.1 不一次性把所有形态做满。三种形态可以分阶段组合：</p>
+
+      <div class="flow">
+        <div class="flow-step">
+          <div class="step-num">PHASE 1</div>
+          <div class="step-name">Brand Console</div>
+          <div class="step-desc">骨架 + cmd+K palette 嵌入</div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">PHASE 2</div>
+          <div class="step-name">L3 模板扩展</div>
+          <div class="step-desc">高频场景模板覆盖</div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">PHASE 3</div>
+          <div class="step-name">Studio Canvas</div>
+          <div class="step-desc">L4 图像生成单独画布卫星</div>
+        </div>
+        <div class="flow-step">
+          <div class="step-num">PHASE 4</div>
+          <div class="step-name">API 对外</div>
+          <div class="step-desc">Vitana 等接入 + agency portal</div>
+        </div>
+      </div>
+
+      <div class="callout green">
+        <div class="callout-label">阶段目标</div>
+        <p>对内：A 主体 / B 卫星（仅 L4 进画布） / cmd+K 加速器。任何角色都能找到舒服的入口，治理始终在 A 这一侧。</p>
+      </div>
+    </section>
+
+    <!-- =================== CH 4 信息架构 =================== -->
+    <section class="chapter" id="ch-4">
+      <div class="ch-num">04 · information architecture</div>
+      <h2 class="ch-title">信息架构与导航</h2>
+      <p class="ch-lead">六大模块对应左侧导航，全局元素（cmd+K / 顶部品牌切换器 / 底部合规状态）在所有模块持续可见。</p>
+
+      <h3 class="sub-title"><span class="id">4.1</span>六大模块概览</h3>
+
+      <div class="module-grid">
+        <div class="mod-card">
+          <div class="head"><div class="name">Brand Source</div><div class="id">5.1</div></div>
+          <div class="desc">品牌源管理：tokens、voice、视觉风格、logo 规范。版本化的 source of truth。</div>
+          <div class="meta"><span class="tag p0">P0</span><span class="tag">core</span></div>
+        </div>
+        <div class="mod-card">
+          <div class="head"><div class="name">Asset Library</div><div class="id">5.2</div></div>
+          <div class="desc">产品资产库：Aura/Mate 渲染图、3D 文件、场景图、icon、过往交付物。强制打标。</div>
+          <div class="meta"><span class="tag p0">P0</span><span class="tag">core</span></div>
+        </div>
+        <div class="mod-card">
+          <div class="head"><div class="name">Generation Studio</div><div class="id">5.3</div></div>
+          <div class="desc">四档产物生成：L1 Prompt · L2 Mini MD · L3 模板 · L4 图像生成。共享上下文构建器。</div>
+          <div class="meta"><span class="tag p0">P0</span><span class="tag">L1·L2·L3</span><span class="tag amber">L4 phase 3</span></div>
+        </div>
+        <div class="mod-card">
+          <div class="head"><div class="name">Compliance</div><div class="id">5.4</div></div>
+          <div class="desc">品牌合规 lint + 审批流。这个模块决定了"真规范"还是"装饰品"。</div>
+          <div class="meta"><span class="tag p0">P0</span><span class="tag">基础 lint</span></div>
+        </div>
+        <div class="mod-card">
+          <div class="head"><div class="name">Command Palette</div><div class="id">5.5</div></div>
+          <div class="desc">cmd+K 全局召唤 · 跳转 / 创建 / 搜索 / 切版本一应俱全。键盘党核心入口。</div>
+          <div class="meta"><span class="tag p0">P0</span><span class="tag">global</span></div>
+        </div>
+        <div class="mod-card">
+          <div class="head"><div class="name">Figma Plugin</div><div class="id">5.6</div></div>
+          <div class="desc">设计师工作流入口：在 Figma 内调用 tokens、插资产、生成 prompt、提交审批。</div>
+          <div class="meta"><span class="tag amber">P1</span><span class="tag">phase 1 末</span></div>
+        </div>
+        <div class="mod-card">
+          <div class="head"><div class="name">API & SDK</div><div class="id">5.7</div></div>
+          <div class="desc">对内输出层。所有写操作走 API，UI 是 client。Vitana 等下游消费方接入点。</div>
+          <div class="meta"><span class="tag p0">P0 接口</span><span class="tag amber">P1 SDK</span></div>
+        </div>
+        <div class="mod-card" style="border-color:var(--accent-line);background:var(--accent-soft)">
+          <div class="head"><div class="name" style="color:var(--accent)">Total · v0.1</div><div class="id">summary</div></div>
+          <div class="desc"><b>P0 模块 5 个</b> · P1 模块 2 个 · L4 端到端图像生成推迟到 Phase 3 单独立项。</div>
+          <div class="meta"><span class="tag p0">5 modules</span></div>
+        </div>
+      </div>
+
+      <h3 class="sub-title"><span class="id">4.2</span>全局元素</h3>
+      <p>三类元素在所有模块持续可见：</p>
+      <ul class="spec-list">
+        <li><b>顶部 brand-version 切换器</b> · 当前查看的 brand 版本（v1.2 / v1.3-draft），影响下方所有数据视图</li>
+        <li><b>cmd+K 召唤入口</b> · 任何页面、任何输入框外按下都触发命令面板</li>
+        <li><b>底部 compliance 状态条</b> · 当前操作的合规状态（绿/黄/红），点击展开 lint 详情</li>
+      </ul>
+    </section>
+
+    <!-- =================== CH 5 模块详细需求 =================== -->
+    <section class="chapter" id="ch-5">
+      <div class="ch-num">05 · module specs</div>
+      <h2 class="ch-title">模块详细需求</h2>
+      <p class="ch-lead">逐个模块定义：用户、核心能力、关键字段、交互细节、边界条件。</p>
+
+      <!-- ============= 5.1 Brand Source ============= -->
+      <div class="module-section" id="mod-brand">
+        <div class="head">
+          <div class="info">
+            <div class="badge">5.1 · MODULE</div>
+            <h3>Brand Source · 品牌源</h3>
+            <p class="desc">品牌的 source of truth。一切 tokens、字体、voice、视觉风格、logo 规范，都从这里出。它是机器可读的（写入即生成 MD），也是人类可编辑的（带可视化 UI）。</p>
+          </div>
+          <div class="meta-pills">
+            <span class="priority-pill p0">P0</span>
+            <span class="tag">phase 1</span>
+          </div>
+        </div>
+
+        <h4 class="minor-title">5.1.1 用户与权限</h4>
+        <p>读：所有用户。写：品牌 lead + 设计 lead（角色 = brand_admin）。普通设计师可发起修改 PR，但不能直接发布。</p>
+
+        <h4 class="minor-title">5.1.2 核心子模块（15 段式 · v0.1.9）</h4>
+        <p>v0.1.0 基于 awesome-design-md 9 段结构起步；v0.1.8 扩 §10 Users；<b>v0.1.9 基于 viaim KB 再扩 §11-§15 共 5 段</b>，覆盖产品矩阵 / 命名 / 地域差异 / 业务场景 / 价值主张 — 这些是 viaim 这种「双区双品牌 + 三硬件 + 多 AI」复杂业务的必要维度。</p>
+
+        <table class="spec">
+          <thead><tr><th style="width:32px;">#</th><th>段名</th><th>内容</th><th>UI 形态</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><b>Visual Theme</b></td><td>氛围、密度、美学哲学（"Calm-tech 安静感、克制留白"）</td><td>富文本 + reference 图</td></tr>
+            <tr><td>2</td><td><b>Color Palette</b></td><td>tokens（Hex + 语义角色 + 别名）</td><td>色板编辑器 + token 关系图</td></tr>
+            <tr><td>3</td><td><b>Typography</b></td><td>字族、字重层级、字间距、行高</td><td>type scale 可视化</td></tr>
+            <tr><td>4</td><td><b>Spacing & Grid</b></td><td>4/8 base unit、间距 token、栅格</td><td>spacing visualizer</td></tr>
+            <tr><td>5</td><td><b>Component Stylings</b></td><td>button、card、input 三态规范</td><td>组件样例预览</td></tr>
+            <tr><td>6</td><td><b>Motion</b></td><td>动效曲线、duration token</td><td>动画 demo + curve editor</td></tr>
+            <tr><td>7</td><td><b>Voice & Tone</b></td><td>品牌语气、do/don't 对照表</td><td>富文本 + 并列示例</td></tr>
+            <tr><td>8</td><td><b>Brand Marks</b></td><td>logo 变体、留白、最小尺寸</td><td>logo 上传 + safe zone 可视化</td></tr>
+            <tr><td>9</td><td><b>Don't / 反例</b></td><td>禁用配色、错误用法</td><td>反例画廊（带原因）</td></tr>
+            <tr><td>10</td><td><b>Users · 用户信息</b><br><span style="color:var(--accent);font-size:11px;">v0.1.8+</span></td><td>主/次/反向画像 · age, scenes, needs, pain_points, values</td><td>persona 卡片编辑器 + spec 卡片视图</td></tr>
+            <tr><td>11</td><td><b>Product · 产品架构</b><br><span style="color:var(--accent);font-size:11px;">v0.1.9+</span></td><td>硬件线 + 软件平台 + AI 引擎 + 旗舰功能（每项含 region 标注）</td><td>分组卡片编辑器</td></tr>
+            <tr><td>12</td><td><b>Naming · 命名规范</b><br><span style="color:var(--accent);font-size:11px;">v0.1.9+</span></td><td>品牌对名 + 命名 pattern + 产品/功能双区映射 + 强制规则</td><td>映射表编辑器</td></tr>
+            <tr><td>13</td><td><b>Localization · 地域差异</b><br><span style="color:var(--accent);font-size:11px;">v0.1.9+</span></td><td>scope 标记 + 功能差异表 + 订阅档（cn/overseas）</td><td>差异表编辑器</td></tr>
+            <tr><td>14</td><td><b>Use Cases · 业务场景</b><br><span style="color:var(--accent);font-size:11px;">v0.1.9+</span></td><td>业务场景（密度/时长/人数）+ 物理环境 + 录音模式</td><td>场景表 + pill 列表</td></tr>
+            <tr><td>15</td><td><b>Value Proposition · 核心价值</b><br><span style="color:var(--accent);font-size:11px;">v0.1.9+</span></td><td>one-liner + promise + 4-step 模型 + differentiators + anti-positioning</td><td>步骤卡 + 列表</td></tr>
+          </tbody>
+        </table>
+
+        <p>每段的<b>注入权重</b>由 Settings → 节点关系表配置，详见 §5.8。</p>
+
+        <h4 class="minor-title">5.1.3 版本控制</h4>
+        <p>brand 实例采用语义化版本（v1.0 / v1.1 / v1.2-draft）。每次"发布"创建快照，下游产物记录引用版本。修改流程：<b>编辑 → 草案 → 影响分析 → 审批 → 发布</b>。已发布的版本不可改，只能 deprecate。</p>
+
+        <h4 class="minor-title">5.1.4 与 Markdown 仓库的双向同步</h4>
+        <p>UI 是写入端，Markdown 仓库是物化视图。所有写操作通过 API → 同时写 DB 和 commit MD 到内部 Git 仓。<b>外部允许读 MD（给 agency / Vitana 用），但写操作只能通过 UI/API</b>。这避免了"双向同步地狱"。</p>
+
+        <h4 class="minor-title">5.1.5 v0.1 边界</h4>
+        <ul class="spec-list">
+          <li>仅支持单 brand（viaim 主品牌）。多 brand 切换器架构预埋，但 UI 不暴露</li>
+          <li>仅支持人工编辑。"从 Figma 提取 tokens" 推迟到 Phase 2</li>
+          <li>v0.1.0-0.1.7 含 9 段；<b>v0.1.8 起扩展为 10 段</b>（§10 Users）</li>
+        </ul>
+      </div>
+
+      <!-- ============= 5.2 Asset Library ============= -->
+      <div class="module-section" id="mod-asset">
+        <div class="head">
+          <div class="info">
+            <div class="badge">5.2 · MODULE</div>
+            <h3>Asset Library · 产品资产库</h3>
+            <p class="desc">所有产品级视觉资产的中央仓库。强制 schema 化打标 + 自由 tags。检索是核心 affordance，因为下游 L3/L4 都靠它。</p>
+          </div>
+          <div class="meta-pills">
+            <span class="priority-pill p0">P0</span>
+            <span class="tag">phase 1</span>
+          </div>
+        </div>
+
+        <h4 class="minor-title">5.2.1 资产分层</h4>
+
+        <table class="spec">
+          <thead><tr><th>层级</th><th>内容</th><th>更新频率</th><th>v0.1 范围</th></tr></thead>
+          <tbody>
+            <tr><td><b>L1 · Brand Source</b></td><td>tokens / voice / 风格规范<br><span style="color:var(--ink-mute);font-size:12px;">→ §5.1</span></td><td>低</td><td>✓</td></tr>
+            <tr><td><b>L2 · Product Assets</b></td><td>Aura/Mate 渲染图 · 3D 源 · 摄影 · 场景图 · icon</td><td>中</td><td>✓</td></tr>
+            <tr><td><b>L3 · Output Archive</b></td><td>过往交付物（海报、详情图、社交素材）</td><td>高</td><td>✓ 仅查询入库</td></tr>
+          </tbody>
+        </table>
+
+        <h4 class="minor-title">5.2.2 强制 Schema 字段</h4>
+        <p>资产打标必须有的强制字段（enum 限定，不允许自由填）。这是避免"三个月后变垃圾场"的关键。</p>
+
+        <table class="spec">
+          <thead><tr><th>字段</th><th>类型</th><th>枚举/示例</th><th>是否必填</th></tr></thead>
+          <tbody>
+            <tr><td><code class="inline">product</code></td><td>enum</td><td>aura · mate · viaim_general · none</td><td>✓</td></tr>
+            <tr><td><code class="inline">angle</code></td><td>enum</td><td>front · 45 · side · top · exploded · scene</td><td>视类型</td></tr>
+            <tr><td><code class="inline">colorway</code></td><td>enum</td><td>obsidian · pearl · sand · custom</td><td>视类型</td></tr>
+            <tr><td><code class="inline">scene</code></td><td>enum</td><td>desk · travel · meeting · lifestyle · plain</td><td>视类型</td></tr>
+            <tr><td><code class="inline">hardware_rev</code></td><td>string</td><td>v1.0 · v1.1 · prerelease</td><td>✓ for product</td></tr>
+            <tr><td><code class="inline">use_scope</code></td><td>enum</td><td>marketing · internal_only · legal_review</td><td>✓</td></tr>
+            <tr><td><code class="inline">format</code></td><td>enum</td><td>png · jpg · webp · psd · obj · fbx · gltf</td><td>✓ auto</td></tr>
+            <tr><td><code class="inline">tags</code></td><td>string[]</td><td>自由填，作为辅助检索</td><td>—</td></tr>
+          </tbody>
+        </table>
+
+        <h4 class="minor-title">5.2.3 检索能力</h4>
+        <ul class="spec-list">
+          <li><b>组合筛选</b> · product + angle + colorway 三轴筛选，最常用</li>
+          <li><b>自然语言</b> · "会议场景里的 Mate 渲染图"——通过 embedding 检索匹配</li>
+          <li><b>视觉相似</b> · 上传一张参考图，找视觉相似的资产（Phase 2）</li>
+          <li><b>cmd+K 直达</b> · 全局快捷键直接搜索资产，搜中后可粘贴/插入到当前编辑器</li>
+        </ul>
+
+        <h4 class="minor-title">5.2.4 v0.1 边界</h4>
+        <ul class="spec-list">
+          <li>支持图片（PNG/JPG/WebP）+ 3D 文件（GLTF/OBJ/FBX，仅展示元数据，不渲染预览）</li>
+          <li>视频资产推迟到 Phase 2（HerE 概念视频后续会有大量素材）</li>
+          <li>视觉相似检索推迟到 Phase 2，v0.1 仅做基于 tag 的检索</li>
+          <li>初始资产规模预估 200-500 个文件（Aura + Mate + viaim 通用素材，待 §10-Q4 确认）</li>
+        </ul>
+      </div>
+
+      <!-- ============= 5.3 Generation Studio ============= -->
+      <div class="module-section" id="mod-studio">
+        <div class="head">
+          <div class="info">
+            <div class="badge">5.3 · MODULE · CORE</div>
+            <h3>Generation Studio · 生成工作台</h3>
+            <p class="desc">四档产物生成，按 AI 自主度分层（L1 → L4）。共享一个「上下文构建器」，选完场景后系统自动组装 brand + assets，用户只填增量信息。这是产品的核心 UX 杠杆。</p>
+          </div>
+          <div class="meta-pills">
+            <span class="priority-pill p0">P0</span>
+            <span class="tag">L1·L2·L3</span>
+            <span class="tag amber">L4 phase 3</span>
+          </div>
+        </div>
+
+        <h4 class="minor-title">5.3.1 四档产物（按 AI 自主度排序）</h4>
+
+        <div class="tab-group">
+          <div class="tab-bar">
+            <button class="tab-btn active" data-tab="l1">L1 / prompt<span class="lvl">Prompt</span></button>
+            <button class="tab-btn" data-tab="l2">L2 / mini md<span class="lvl">Design Brief</span></button>
+            <button class="tab-btn" data-tab="l3">L3 / template<span class="lvl">模板填充</span></button>
+            <button class="tab-btn" data-tab="l4">L4 / generate<span class="lvl">端到端图像</span></button>
+          </div>
+
+          <div class="tab-pane active" data-pane="l1">
+            <h5>产物形态</h5>
+            <p>工程级 prompt 字符串。可复制到 Midjourney / Stable Diffusion / Claude / ChatGPT 使用。</p>
+            <h5>谁来收尾</h5>
+            <p>人类设计师。Brand OS 只提供组装好的高质量 prompt，不做生成。</p>
+            <h5>核心组装逻辑</h5>
+            <p>Brand DNA（visual theme + voice + don't）+ 选定资产的视觉描述 + 用户输入的场景词 = 一段含摄影术语、构图、光线、负面词的工程级 prompt。</p>
+            <h5>v0.1 边界</h5>
+            <p><b>P0 必做。</b>是杠杆最高的产物：边际成本极低（一次 LLM 调用），价值很高（让设计师不再"裸 prompt 跑 Midjourney"）。</p>
+          </div>
+
+          <div class="tab-pane" data-pane="l2">
+            <h5>产物形态</h5>
+            <p>结构化 Markdown 文件（约 1-3 KB），包含项目信息 + brand 摘要 + tokens 子集 + 参考资产 URL。</p>
+            <h5>谁来收尾</h5>
+            <p>下游 AI agent（如 Claude Code、Cursor、Vitana 内部 agent）或外部 agency 的设计师。</p>
+            <h5>核心组装逻辑</h5>
+            <p>用户输入：项目名 / 场景类型 / 调性 / 时长 / 关键产品。系统输出：完整 design brief，下游 AI 读了之后能直接产出符合品牌的设计草图。</p>
+            <h5>v0.1 边界</h5>
+            <p><b>P0 必做。</b>是 viaim 与 agency 的协作粘合剂——agency 拿这份 MD，自己用 AI 出初稿，避免反复"问 viaim 你们品牌色到底是什么"。</p>
+          </div>
+
+          <div class="tab-pane" data-pane="l3">
+            <h5>产物形态</h5>
+            <p>可直接交付的合规设计图（PNG / SVG / Figma 文件）。基于预定义模板 + 槽位填充。</p>
+            <h5>谁来收尾</h5>
+            <p>半自动。多数情况下 PM/运营可直接用，复杂场景设计师在 Figma 中精修。</p>
+            <h5>核心组装逻辑</h5>
+            <p>用户选模板（"社交卡 1080" / "PRD 封面" / "活动 banner"）→ 槽位填充（文案 / 选中产品资产 / 自定义颜色）→ 实时渲染 → 合规 lint → 导出。</p>
+            <h5>v0.1 边界</h5>
+            <p><b>P0 必做但范围小。</b>v0.1 只覆盖 3 个高频模板：<b>社交卡 1080×1080 · 文档/PRD 封面 · 活动 banner 16:9</b>。Phase 2 扩展到 8-10 个模板。</p>
+            <h5>实现路径</h5>
+            <p>Fork Open Design 的 skill 协议作为模板格式（19 个开箱模板可作为参考）。模板用 HTML/SVG 渲染，避开 diffusion 模型的不稳定性，品牌一致性更可控。</p>
+          </div>
+
+          <div class="tab-pane" data-pane="l4">
+            <h5>产物形态</h5>
+            <p>端到端图像生成。不是「让所有人能生成精致图」，而是「让 viaim 品牌的图永远是 viaim 的样子」。</p>
+            <h5>谁来收尾</h5>
+            <p>设计师做最终选择。L4 输出 4 张候选 + 自动评分排序。</p>
+            <h5>六层管线（已在前期讨论中拍板）</h5>
+            <ol class="spec-list">
+              <li><b>Prompt Rewriter</b> — Claude 重写用户简单描述为工程级 prompt（注入 brand context）</li>
+              <li><b>Reference Injection</b> — 自动从 Asset Library 检索匹配资产作为 IP-Adapter / Style ref</li>
+              <li><b>Model Router</b> — 按场景路由（gpt-image-2 写实 / Ideogram 文字密集 / Flux 插画）</li>
+              <li><b>参数预设</b> — 每个场景模板预设最优参数（用户不感知）</li>
+              <li><b>后处理流水线</b> — 合规 lint + 超分 + 抠图 + 文字层叠加 + 色彩校正</li>
+              <li><b>候选筛选</b> — 一次跑 4 张，CLIP 相似度 + 美学分 + 合规分加权排序</li>
+            </ol>
+            <h5>v0.1 边界</h5>
+            <p><b>不在 v0.1。</b>L4 推迟到 Phase 3 单独立项（6-8 周，2 工程师）。理由：投入产出比与 v0.1 目标不匹配；L1/L2/L3 已能解决 80% 高频场景。</p>
+            <h5>v0.1 仅保留</h5>
+            <p>L4 tab 在 Studio 中显示为「敬请期待」占位 + roadmap 链接。让用户感知到完整产品形态，但避免误用未成熟功能。</p>
+          </div>
+        </div>
+
+        <h4 class="minor-title">5.3.2 共享上下文构建器（核心 UX 杠杆）</h4>
+        <p>无论 L1-L4 哪一档，用户进入 Studio 第一步是「<b>选场景</b>」。选完场景后：</p>
+        <ul class="spec-list">
+          <li>系统自动注入：当前 brand version 的 tokens / voice / 视觉规范</li>
+          <li>系统自动检索：Asset Library 中最相关的产品资产（默认 top 3，可换）</li>
+          <li>系统预填：场景对应的尺寸、构图建议、文案字数上限</li>
+          <li>用户只填：核心文案 / 关键产品 / 调性微调</li>
+        </ul>
+        <p>这一步把"用户应该输入什么"的决策从用户身上转移到了系统身上，是降低非设计角色门槛的关键。</p>
+
+        <h4 class="minor-title">5.3.3 历史归档与审计</h4>
+        <p>每次生成都自动归档到 Output Archive，包含：用户、时间、引用的 brand version、引用的资产 ID、prompt（如适用）、合规结果、采纳与否。这一份归档既是审计依据，也是后期 fine-tune 训练数据。</p>
+      </div>
+
+      <!-- ============= 5.4 Compliance ============= -->
+      <div class="module-section" id="mod-compliance">
+        <div class="head">
+          <div class="info">
+            <div class="badge">5.4 · MODULE</div>
+            <h3>Compliance · 品牌合规</h3>
+            <p class="desc">这个模块决定了 Brand OS 是"真规范"还是"装饰品"。哪怕只有 3 条规则，v0.1 必须做。</p>
+          </div>
+          <div class="meta-pills">
+            <span class="priority-pill p0">P0</span>
+            <span class="tag">phase 1</span>
+          </div>
+        </div>
+
+        <h4 class="minor-title">5.4.1 v0.1 必备 5 条 lint 规则</h4>
+
+        <table class="spec">
+          <thead><tr><th>#</th><th>规则</th><th>实现方式</th><th>违规等级</th></tr></thead>
+          <tbody>
+            <tr><td>R1</td><td><b>色值在 token 范围内</b></td><td>采样导出图像主色，与 brand tokens 比对（HSL 距离阈值）</td><td>warning</td></tr>
+            <tr><td>R2</td><td><b>字体合规</b></td><td>L3 模板渲染时检查 font-family，必须在 brand typography 列表中</td><td>error</td></tr>
+            <tr><td>R3</td><td><b>logo 留白</b></td><td>检测产物中 logo 周围 safe zone 像素，最小留白 = logo 高度 × 0.5</td><td>error</td></tr>
+            <tr><td>R4</td><td><b>logo 最小尺寸</b></td><td>logo 在产物中最短边 ≥ 24px</td><td>warning</td></tr>
+            <tr><td>R5</td><td><b>文案字数</b></td><td>主标题、副标题各有上限（场景级配置）</td><td>warning</td></tr>
+          </tbody>
+        </table>
+
+        <h4 class="minor-title">5.4.2 审批流</h4>
+        <p>v0.1 仅对 Brand Source 修改启用强制审批（修改 → 草案 → brand_admin 审批 → 发布）。Generate Studio 产物默认不强制审批，但提供「<b>提交品牌 lead 审批</b>」按钮，用于对外发布前的最终把关。</p>
+
+        <h4 class="minor-title">5.4.3 实时反馈</h4>
+        <p>Console 底部状态栏常驻显示当前编辑器的合规状态（绿/黄/红 三色 + 违规计数）。点击展开详情面板，每条违规给出具体定位（哪个色值、哪段文案）和建议修复。</p>
+      </div>
+
+      <!-- ============= 5.5 Command Palette ============= -->
+      <div class="module-section" id="mod-cmdk">
+        <div class="head">
+          <div class="info">
+            <div class="badge">5.5 · MODULE · KEYBOARD-FIRST</div>
+            <h3>Command Palette · ⌘K 命令面板</h3>
+            <p class="desc">Linear / Notion / Figma 同款机制。在任何页面、任何输入框外按下 <code class="inline">⌘ K</code>（Windows/Linux 为 <code class="inline">Ctrl K</code>）召唤。键盘党核心入口，鼠标党也可用。</p>
+          </div>
+          <div class="meta-pills">
+            <span class="priority-pill p0">P0</span>
+            <span class="tag">global</span>
+          </div>
+        </div>
+
+        <h4 class="minor-title">5.5.1 命令分类</h4>
+
+        <table class="spec">
+          <thead><tr><th>分类</th><th>命令示例</th><th>命中后行为</th></tr></thead>
+          <tbody>
+            <tr><td><b>跳转 (Go)</b></td><td>"go brand" / "go assets" / "go studio"</td><td>切换到对应模块</td></tr>
+            <tr><td><b>新建 (New)</b></td><td>"new social card" / "new mini md"</td><td>跳到 Studio 对应模板</td></tr>
+            <tr><td><b>搜索 (Find)</b></td><td>"aura 45° front" / "double 11"</td><td>智能检索资产/产物/历史</td></tr>
+            <tr><td><b>切换 (Switch)</b></td><td>"v1.2" / "v1.3-draft"</td><td>切换 brand version 视图</td></tr>
+            <tr><td><b>动作 (Action)</b></td><td>"export" / "submit review" / "lint"</td><td>对当前编辑器执行</td></tr>
+          </tbody>
+        </table>
+
+        <h4 class="minor-title">5.5.2 自然语言意图（与 C 方案融合）</h4>
+        <p>除了精确命令，输入框支持自然语言。例如输入"帮我做个 Aura 双 11 微博海报"，系统识别意图后跳到 Generate Studio · L3 · social_card_1080，预填 Aura 资产 + 双 11 文案占位。这吸收了 Intent Launcher 方案的优点，但作为 Brand Console 的加速器，不替代主体。</p>
+
+        <h4 class="minor-title">5.5.3 模块内快捷键（Linear 风格）</h4>
+
+        <table class="spec">
+          <thead><tr><th>快捷键</th><th>行为</th><th>作用域</th></tr></thead>
+          <tbody>
+            <tr><td><code class="inline">G B</code></td><td>跳转 Brand Source</td><td>全局</td></tr>
+            <tr><td><code class="inline">G A</code></td><td>跳转 Asset Library</td><td>全局</td></tr>
+            <tr><td><code class="inline">G S</code></td><td>跳转 Generate Studio</td><td>全局</td></tr>
+            <tr><td><code class="inline">N</code></td><td>新建当前上下文产物</td><td>模块内</td></tr>
+            <tr><td><code class="inline">/</code></td><td>聚焦搜索框</td><td>列表页</td></tr>
+            <tr><td><code class="inline">⌘ Enter</code></td><td>提交并执行（生成/保存）</td><td>编辑器</td></tr>
+            <tr><td><code class="inline">⌘ ⇧ V</code></td><td>切换 brand version</td><td>全局</td></tr>
+            <tr><td><code class="inline">Esc</code></td><td>退出当前编辑/关闭面板</td><td>通用</td></tr>
+          </tbody>
+        </table>
+
+        <h4 class="minor-title">5.5.4 实现复杂度</h4>
+        <p>v0.1 推荐使用 <code class="inline">cmdk</code>（pacocoursey）作为基础组件，扩展自定义命令源。意图识别走 Claude API（system prompt 含命令清单），fallback 到字符串匹配。</p>
+      </div>
+
+      <!-- ============= 5.6 Figma Plugin ============= -->
+      <div class="module-section" id="mod-figma">
+        <div class="head">
+          <div class="info">
+            <div class="badge">5.6 · MODULE</div>
+            <h3>Figma Plugin · 设计师工作流入口</h3>
+            <p class="desc">设计师 80% 时间在 Figma 里。如果 Brand OS 只在 Web 后台，他们不会用。Plugin 是 must-have，但 v0.1 仅做最薄一层。</p>
+          </div>
+          <div class="meta-pills">
+            <span class="priority-pill p1">P1</span>
+            <span class="tag">phase 1 末</span>
+          </div>
+        </div>
+
+        <h4 class="minor-title">5.6.1 v0.1 三个核心能力</h4>
+        <ol class="spec-list">
+          <li><b>读取 brand tokens</b> · 在 Figma 内一键加载最新 brand version 的色板和文字样式（写入到 Figma Local Styles）</li>
+          <li><b>插入资产</b> · 检索 Asset Library，把选中的资产以图片或链接形式插入当前 frame</li>
+          <li><b>提交产物</b> · 把当前选中 frame 上传到 Output Archive，自动跑合规 lint，结果回填到 Figma 评论</li>
+        </ol>
+
+        <h4 class="minor-title">5.6.2 v0.1 不做的</h4>
+        <ul class="spec-list">
+          <li>不做"Figma → Brand Source 反向同步"（避免双向同步地狱）</li>
+          <li>不做"在 Figma 内调用 L3/L4 生成"（用户跳到 Web 端做更稳）</li>
+          <li>不做"自动应用 brand 到现有 Figma 文件"（风险高，用户无法理解结果）</li>
+        </ul>
+
+        <h4 class="minor-title">5.6.3 排期决策</h4>
+        <p>原本计划 Phase 1 中段交付，根据 §10-Q3 决策：如果 viaim 设计师团队规模 &lt; 5 人，可推迟到 Phase 2 初；&gt;= 5 人则保留在 Phase 1 末。待对齐。</p>
+      </div>
+
+      <!-- ============= 5.11 INSPIRATION POOL · 灵感池 ============= -->
+      <div class="module-section" id="mod-inbox">
+        <div class="head">
+          <div class="info">
+            <div class="badge">5.11 · MODULE · v0.1.5+</div>
+            <h3>Inspiration Pool · 灵感池</h3>
+            <p class="desc">PRD 之前没覆盖的「上游入口」。把外部资源（网页、GitHub 项目、工具、文章、片段）放进来，AI 做前期分析，把结论按品牌系统的 9 段映射回 Brand Source 草案。</p>
+          </div>
+          <div class="meta-pills">
+            <span class="priority-pill p1">P1</span>
+            <span class="tag">v0.1.5</span>
+          </div>
+        </div>
+
+        <h4 class="minor-title">5.11.1 设计动机</h4>
+        <p>设计部日常会接触大量外部信息：W3C clreq 这种规范文档、Open Design / shadcn 这种代码库、GitHub 上的 ui-skills 集合、行业文章、tweet、几句话的灵感片段。它们都<b>潜在影响品牌系统</b>，但传统流程是：「人脑过一遍 → 凭印象决定要不要采纳 → 在 Figma 里手动改」，<b>没有可追溯的链路</b>。Inspiration Pool 把这条链路结构化。</p>
+
+        <h4 class="minor-title">5.11.2 资源类型</h4>
+
+        <table class="spec">
+          <thead><tr><th>type</th><th>典型例子</th><th>抓取方式</th></tr></thead>
+          <tbody>
+            <tr><td><code class="inline">url</code></td><td>W3C 规范、博客文章、文档站</td><td>Jina Reader → Markdown</td></tr>
+            <tr><td><code class="inline">github</code></td><td>组件库、设计系统、ui-skills</td><td>Jina Reader（自动识别 README）</td></tr>
+            <tr><td><code class="inline">tool</code></td><td>npm 包、Hugging Face 模型、Producthunt 工具</td><td>Jina Reader</td></tr>
+            <tr><td><code class="inline">article</code></td><td>PDF / md 文件、长文摘录</td><td>Jina Reader 或粘贴</td></tr>
+            <tr><td><code class="inline">snippet</code></td><td>一段话、一个想法、对话摘要</td><td>直接粘贴</td></tr>
+          </tbody>
+        </table>
+
+        <h4 class="minor-title">5.11.3 状态机</h4>
+
+        <div class="flow">
+          <div class="flow-step"><div class="step-num">STATE 1</div><div class="step-name">inbox</div><div class="step-desc">已添加，未抓取</div></div>
+          <div class="flow-step"><div class="step-num">STATE 2</div><div class="step-name">fetched</div><div class="step-desc">正文已抓取（Markdown）</div></div>
+          <div class="flow-step"><div class="step-num">STATE 3</div><div class="step-name">analyzing</div><div class="step-desc">LLM 处理中</div></div>
+          <div class="flow-step"><div class="step-num">STATE 4</div><div class="step-name">reviewed</div><div class="step-desc">分析就绪等审阅</div></div>
+        </div>
+
+        <p>审阅之后两条出口：<b>applied</b>（合并到 Brand Source 草案，记录到 <code class="inline">applied_to</code>）或 <b>rejected</b>（标记忽略，留作历史）。</p>
+
+        <h4 class="minor-title">5.11.4 LLM 结构化分析协议</h4>
+
+        <p>每条 source 调用一次 LLM，使用 system prompt 强约束的 JSON 输出：</p>
+
+<pre class="code">{
+  <span class="k">"type"</span>: <span class="s">"spec | library | article | tool | other"</span>,
+  <span class="k">"summary"</span>: <span class="s">"中文 1-2 句话"</span>,
+  <span class="k">"brand_sections"</span>: [<span class="s">"typography"</span>, <span class="s">"voice"</span>],   <span class="c"># 9 段中的 1-3 段</span>
+  <span class="k">"key_takeaways"</span>: [<span class="s">"3-6 条原子级要点"</span>],
+  <span class="k">"applicable_rules"</span>: [
+    {
+      <span class="k">"section"</span>: <span class="s">"typography"</span>,
+      <span class="k">"rule"</span>: <span class="s">"中文段落首行缩进 2 字符"</span>,
+      <span class="k">"rationale"</span>: <span class="s">"W3C clreq 推荐"</span>,
+      <span class="k">"confidence"</span>: <span class="s">"high | medium | low"</span>
+    }
+  ],
+  <span class="k">"suggested_brand_updates"</span>: [          <span class="c"># 0-5 条具体 schema patch</span>
+    {
+      <span class="k">"path"</span>: <span class="s">"typography.cn_rules"</span>,    <span class="c"># dotted path</span>
+      <span class="k">"operation"</span>: <span class="s">"set | append | merge"</span>,
+      <span class="k">"value"</span>: <span class="s">"..."</span>,
+      <span class="k">"reason"</span>: <span class="s">"为什么这条值得加"</span>
+    }
+  ],
+  <span class="k">"risk_or_caveats"</span>: <span class="s">"风险 / 与现有规则冲突 / 版权等"</span>
+}</pre>
+
+        <p>合规约束：返回严格 JSON、无 markdown 围栏、中文 summary、提议的 path 优先用现有 9 段已有字段，新字段允许但要可解释。</p>
+
+        <h4 class="minor-title">5.11.5 应用到 Brand Source · patch 合并</h4>
+
+        <p>用户在分析结果页勾选要采纳的 patch，点 <b>「→ 合并到 Brand Source 草案」</b>：</p>
+
+        <ol class="spec-list">
+          <li>系统调用 <code class="inline">Store.ensureDraft()</code> 拿当前 draft（不存在则基于最新 published 创建）</li>
+          <li>对每个勾选的 patch 调用 <code class="inline">applyPatchToObject(draft.data, patch)</code>，按 <code class="inline">operation</code> 决定 set / append / merge 行为</li>
+          <li>把变更原因合并到 <code class="inline">draft.change_note</code>（含 source 链接）</li>
+          <li>在 source 记录 <code class="inline">applied_to[]</code> 写入「应用到 vX.Y.Z 哪些段」的痕迹，<b>实现可溯源</b></li>
+          <li>UI 跳回 Brand Source，对应 section 即可见新值；用户审阅后正常 publish 走标准 §5.1.3 流程</li>
+        </ol>
+
+        <h4 class="minor-title">5.11.6 v0.1.5 边界</h4>
+        <ul class="spec-list">
+          <li>仅单 brand 范围。Phase 4 多 brand 时，source 也需要 workspace_id 隔离（schema 已预埋）</li>
+          <li>Jina Reader 是默认抓取代理（免鉴权 / CORS 友好 / 返回 Markdown），可在 Settings 改成自建代理</li>
+          <li>未实现：定期重新抓取（监测源更新）、来自 RSS 的批量入库 → Phase 2</li>
+          <li>未实现：自动从 Asset Library 反向归档（让生成产物也能成为 inspiration）→ Phase 3</li>
+        </ul>
+
+        <div class="callout green">
+          <div class="callout-label">为什么这是关键基础设施</div>
+          <p>v0.1 之前 Brand Source 只能<b>从空白手填</b>。有了 Inspiration Pool 之后，brand 升级可以是「读到一篇好文章 → 30 秒入库 → 1 分钟 LLM 分析 → 勾选合并 → 创建 v1.3 草案」的连续路径。这把 brand evolution 从「凭记忆 + 凭印象」变成「<b>有据可查 + 有据可溯</b>」。</p>
+        </div>
+      </div>
+
+      <!-- ============= 5.7 API & SDK ============= -->
+      <div class="module-section" id="mod-api">
+        <div class="head">
+          <div class="info">
+            <div class="badge">5.7 · MODULE</div>
+            <h3>API & SDK · 对内输出层</h3>
+            <p class="desc">从第一天就 API-first。Web UI 是 API 的 client，Vitana 等下游消费方接入零成本。这是未来产品化的基础设施投资。</p>
+          </div>
+          <div class="meta-pills">
+            <span class="priority-pill p0">P0 接口</span>
+            <span class="tag amber">P1 SDK</span>
+          </div>
+        </div>
+
+        <h4 class="minor-title">5.7.1 v0.1 核心端点</h4>
+
+<pre class="code"><span class="c"># Brand 源</span>
+<span class="k">GET</span>  <span class="s">/api/v1/brand/current</span>           <span class="c"># 返回当前发布版本</span>
+<span class="k">GET</span>  <span class="s">/api/v1/brand/versions</span>          <span class="c"># 列出所有版本</span>
+<span class="k">GET</span>  <span class="s">/api/v1/brand/v/:version</span>        <span class="c"># 获取指定版本</span>
+<span class="k">PUT</span>  <span class="s">/api/v1/brand/draft</span>             <span class="c"># 修改草案（admin only）</span>
+<span class="k">POST</span> <span class="s">/api/v1/brand/publish</span>           <span class="c"># 发布草案为新版本</span>
+
+<span class="c"># Asset 库</span>
+<span class="k">GET</span>  <span class="s">/api/v1/assets?product=aura&angle=front</span>
+<span class="k">POST</span> <span class="s">/api/v1/assets</span>                  <span class="c"># 上传 + 打标</span>
+<span class="k">POST</span> <span class="s">/api/v1/assets/search</span>           <span class="c"># 自然语言检索</span>
+
+<span class="c"># Generate Studio</span>
+<span class="k">POST</span> <span class="s">/api/v1/generate/prompt</span>         <span class="c"># L1</span>
+<span class="k">POST</span> <span class="s">/api/v1/generate/mini-md</span>        <span class="c"># L2</span>
+<span class="k">POST</span> <span class="s">/api/v1/generate/template</span>       <span class="c"># L3</span>
+
+<span class="c"># Compliance</span>
+<span class="k">POST</span> <span class="s">/api/v1/compliance/lint</span>         <span class="c"># 上传产物跑 lint</span>
+<span class="k">GET</span>  <span class="s">/api/v1/compliance/rules</span>        <span class="c"># 列出当前规则</span>
+
+<span class="c"># Output Archive</span>
+<span class="k">GET</span>  <span class="s">/api/v1/outputs?author=tang</span>
+<span class="k">POST</span> <span class="s">/api/v1/outputs</span>                 <span class="c"># 归档新产物</span></pre>
+
+        <h4 class="minor-title">5.7.2 SDK</h4>
+        <p>v0.1 仅提供 TypeScript SDK（npm 包）。Phase 2 加 Python SDK（给 Vitana 服务端调用）。SDK 封装认证、版本协商、错误处理。</p>
+
+        <h4 class="minor-title">5.7.3 认证</h4>
+        <p>v0.1 内部使用：基于 viaim SSO + Bearer Token。未来产品化时迁移到 OAuth + workspace 隔离（数据模型已预埋 <code class="inline">workspace_id</code>）。</p>
+      </div>
+
+    </section>
+
+    <!-- =================== CH 6 数据模型 =================== -->
+    <section class="chapter" id="ch-6">
+      <div class="ch-num">06 · data model</div>
+      <h2 class="ch-title">数据模型</h2>
+      <p class="ch-lead">先把 schema 锁死，再做 UI。这是「可视化后台」决策的工程含义——UI 是 schema 的视图，schema 不稳 UI 没法做。</p>
+
+      <h3 class="sub-title"><span class="id">6.1</span>brand.schema.json</h3>
+
+<pre class="code">{
+  <span class="k">"$schema"</span>: <span class="s">"https://json-schema.org/draft/2020-12/schema"</span>,
+  <span class="k">"id"</span>: <span class="s">"viaim-main"</span>,
+  <span class="k">"version"</span>: <span class="s">"1.2.0"</span>,
+  <span class="k">"workspace_id"</span>: <span class="s">"viaim"</span>,           <span class="c"># 多租户预埋</span>
+  <span class="k">"status"</span>: <span class="s">"published"</span>,             <span class="c"># draft | published | deprecated</span>
+  <span class="k">"published_at"</span>: <span class="s">"2026-05-02T..."</span>,
+  <span class="k">"published_by"</span>: <span class="s">"user_tang"</span>,
+
+  <span class="k">"visual_theme"</span>: {
+    <span class="k">"atmosphere"</span>: <span class="s">"calm-tech, restrained warmth, technical precision"</span>,
+    <span class="k">"density"</span>: <span class="s">"low"</span>,                  <span class="c"># low | medium | high</span>
+    <span class="k">"references"</span>: [<span class="s">"asset_id_001"</span>, <span class="s">"asset_id_044"</span>]
+  },
+
+  <span class="k">"colors"</span>: {
+    <span class="k">"tokens"</span>: [
+      { <span class="k">"name"</span>: <span class="s">"primary"</span>, <span class="k">"hex"</span>: <span class="s">"#1A1A1A"</span>, <span class="k">"role"</span>: <span class="s">"text-default"</span> },
+      { <span class="k">"name"</span>: <span class="s">"accent"</span>, <span class="k">"hex"</span>: <span class="s">"#C2410C"</span>, <span class="k">"role"</span>: <span class="s">"action-primary"</span> }
+    ],
+    <span class="k">"aliases"</span>: { <span class="k">"brand"</span>: <span class="s">"primary"</span> }
+  },
+
+  <span class="k">"typography"</span>: {
+    <span class="k">"families"</span>: { <span class="k">"display"</span>: <span class="s">"Söhne"</span>, <span class="k">"body"</span>: <span class="s">"Söhne"</span>, <span class="k">"cn"</span>: <span class="s">"思源黑体 CN"</span> },
+    <span class="k">"scale"</span>: [12, 14, 16, 20, 28, 40]
+  },
+
+  <span class="k">"spacing"</span>: { <span class="k">"base"</span>: <span class="n">4</span>, <span class="k">"scale"</span>: [4, 8, 12, 16, 24, 32, 48, 64] },
+  <span class="k">"voice"</span>: { <span class="k">"tone"</span>: <span class="s">"克制 · 冷静 · 技术感"</span>, <span class="k">"dont"</span>: [<span class="s">"过度热情"</span>, <span class="s">"营销话术"</span>] },
+  <span class="k">"brand_marks"</span>: { <span class="k">"variants"</span>: [...], <span class="k">"safe_zone_ratio"</span>: <span class="n">0.5</span> }
+}</pre>
+
+      <h3 class="sub-title"><span class="id">6.2</span>asset.schema.json</h3>
+
+<pre class="code">{
+  <span class="k">"id"</span>: <span class="s">"asset_aura_45_obsidian_001"</span>,
+  <span class="k">"workspace_id"</span>: <span class="s">"viaim"</span>,
+  <span class="k">"created_at"</span>: <span class="s">"2026-04-12T..."</span>,
+  <span class="k">"uploaded_by"</span>: <span class="s">"user_tang"</span>,
+
+  <span class="k">"file"</span>: {
+    <span class="k">"format"</span>: <span class="s">"png"</span>,
+    <span class="k">"width"</span>: <span class="n">3840</span>,
+    <span class="k">"height"</span>: <span class="n">2160</span>,
+    <span class="k">"size_bytes"</span>: <span class="n">8423011</span>,
+    <span class="k">"storage_url"</span>: <span class="s">"s3://viaim-brand-os/.../aura_45.png"</span>
+  },
+
+  <span class="k">"taxonomy"</span>: {                          <span class="c"># 强制 enum 字段</span>
+    <span class="k">"product"</span>: <span class="s">"aura"</span>,
+    <span class="k">"angle"</span>: <span class="s">"45"</span>,
+    <span class="k">"colorway"</span>: <span class="s">"obsidian"</span>,
+    <span class="k">"scene"</span>: <span class="s">"plain"</span>,
+    <span class="k">"hardware_rev"</span>: <span class="s">"v1.0"</span>,
+    <span class="k">"use_scope"</span>: <span class="s">"marketing"</span>
+  },
+
+  <span class="k">"tags"</span>: [<span class="s">"hero-shot"</span>, <span class="s">"e-commerce-ready"</span>],   <span class="c"># 自由</span>
+  <span class="k">"variants"</span>: [<span class="s">"asset_id_001b"</span>],            <span class="c"># 同资产不同分辨率</span>
+  <span class="k">"embedding"</span>: [<span class="t">float[1536]</span>]              <span class="c"># 自然语言检索用</span>
+}</pre>
+
+      <h3 class="sub-title"><span class="id">6.3</span>output.schema.json (产物归档)</h3>
+
+<pre class="code">{
+  <span class="k">"id"</span>: <span class="s">"out_2026_05_02_001"</span>,
+  <span class="k">"created_at"</span>: <span class="s">"2026-05-02T..."</span>,
+  <span class="k">"author"</span>: <span class="s">"user_tang"</span>,
+  <span class="k">"type"</span>: <span class="s">"L3_template"</span>,                  <span class="c"># L1 | L2 | L3 | L4</span>
+  <span class="k">"template"</span>: <span class="s">"social_card_1080"</span>,
+  <span class="k">"refs"</span>: {
+    <span class="k">"brand_version"</span>: <span class="s">"1.2.0"</span>,           <span class="c"># 关键：可溯源</span>
+    <span class="k">"assets"</span>: [<span class="s">"asset_aura_45_obsidian_001"</span>],
+    <span class="k">"prompt_text"</span>: null
+  },
+  <span class="k">"compliance"</span>: {
+    <span class="k">"status"</span>: <span class="s">"pass"</span>,                   <span class="c"># pass | warn | fail</span>
+    <span class="k">"violations"</span>: []
+  },
+  <span class="k">"adoption"</span>: <span class="s">"adopted"</span>                    <span class="c"># adopted | rejected | iterated</span>
+}</pre>
+
+      <div class="callout amber">
+        <div class="callout-label">Schema 锁定原则</div>
+        <p>这三个 schema 在 Phase 1 启动后<b>不允许 breaking change</b>。新增字段允许，但不能改类型、不能改语义。这是 v0.1 工程纪律的核心约束。</p>
+      </div>
+    </section>
+
+    <!-- =================== CH 7 技术架构 =================== -->
+    <section class="chapter" id="ch-7">
+      <div class="ch-num">07 · architecture</div>
+      <h2 class="ch-title">技术架构与开源复用</h2>
+      <p class="ch-lead">不一站式造轮子。市场上没有任何单一开源项目能解决全部需求（最高 35-40% 匹配度），但拼装能达到 55-65% 复用率。</p>
+
+      <h3 class="sub-title"><span class="id">7.1</span>建议技术栈</h3>
+
+      <table class="spec">
+        <thead><tr><th>层</th><th>选型</th><th>理由</th></tr></thead>
+        <tbody>
+          <tr><td><b>前端</b></td><td>Next.js 14 + React + TypeScript + Tailwind + shadcn/ui</td><td>组件生态成熟、与 cmdk 库无缝、SSR 减负</td></tr>
+          <tr><td><b>命令面板</b></td><td>cmdk (pacocoursey) + Claude API</td><td>事实标准，Linear/Vercel 同款</td></tr>
+          <tr><td><b>后端</b></td><td>Node.js + Hono / Fastify + PostgreSQL + S3 兼容存储</td><td>同栈、API-first 友好</td></tr>
+          <tr><td><b>检索</b></td><td>pgvector（自然语言）+ Postgres GIN（标签）</td><td>v0.1 不需要独立向量库</td></tr>
+          <tr><td><b>LLM</b></td><td>Anthropic Claude API（主）+ OpenAI 兜底</td><td>Claude 在 prompt 重写、意图识别上质量更高</td></tr>
+          <tr><td><b>L3 模板渲染</b></td><td>Satori（HTML→PNG）+ Resvg</td><td>Vercel 同款，避开 diffusion 不稳定性</td></tr>
+          <tr><td><b>L4 引擎</b></td><td>ComfyUI（Phase 3）作为内部服务</td><td>ComfyUI 是事实标准，Lovart/Krea 内部都跑这个</td></tr>
+          <tr><td><b>部署</b></td><td>内部 Docker + viaim 云资源</td><td>v0.1 内部用，无需公网</td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-title"><span class="id">7.2</span>开源复用清单</h3>
+
+      <table class="spec">
+        <thead><tr><th>模块</th><th>策略</th><th>来源</th><th>复用度</th></tr></thead>
+        <tbody>
+          <tr><td>Brand 9 段 schema</td><td>直接抄</td><td>awesome-design-md（voltagent）</td><td><b>100%</b></td></tr>
+          <tr><td>L1/L2 prompt stack</td><td>Fork + 改</td><td>nexu-io/open-design</td><td><b>70%</b></td></tr>
+          <tr><td>L3 skill 协议</td><td>Fork + 改</td><td>nexu-io/open-design 19 个 skill</td><td><b>60%</b></td></tr>
+          <tr><td>71 个参考品牌</td><td>引用学习</td><td>open-design</td><td><b>参考</b></td></tr>
+          <tr><td>Asset Library</td><td><b>自建</b></td><td>—（Pimcore 太重）</td><td>0%</td></tr>
+          <tr><td>可视化后台</td><td><b>自建</b></td><td>—（市场空白，差异化核心）</td><td>0%</td></tr>
+          <tr><td>Figma Plugin</td><td><b>自建</b></td><td>—</td><td>0%</td></tr>
+          <tr><td>Compliance lint</td><td><b>自建</b></td><td>—</td><td>0%</td></tr>
+          <tr><td>L4 ComfyUI 工作流</td><td>引用 + 调</td><td>PosterCraft / Qwen-Image / Flux</td><td><b>40%</b></td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-title"><span class="id">7.3</span>部署架构</h3>
+      <p>v0.1 单 region 单实例部署。组件如下：</p>
+
+      <div class="flow">
+        <div class="flow-step"><div class="step-num">CLIENT</div><div class="step-name">Web App</div><div class="step-desc">Next.js · Vercel-style SSR</div></div>
+        <div class="flow-step"><div class="step-num">API</div><div class="step-name">Hono</div><div class="step-desc">Node.js · 单一服务</div></div>
+        <div class="flow-step"><div class="step-num">DATA</div><div class="step-name">Postgres</div><div class="step-desc">+ pgvector · 单实例</div></div>
+        <div class="flow-step"><div class="step-num">STORAGE</div><div class="step-name">S3-compatible</div><div class="step-desc">资产 + MD 仓库镜像</div></div>
+      </div>
+    </section>
+
+    <!-- =================== CH 8 非功能需求 =================== -->
+    <section class="chapter" id="ch-8">
+      <div class="ch-num">08 · non-functional</div>
+      <h2 class="ch-title">非功能需求</h2>
+      <p class="ch-lead">这五件事容易被忽略，但每一件都是「中台」与「玩具」的分水岭。v0.1 必须做。</p>
+
+      <h3 class="sub-title"><span class="id">8.1</span>版本控制</h3>
+      <p>brand 强制语义版本 + 不可变历史。每个产物记录引用版本。规范升级提供「<b>影响分析</b>」（多少历史产物用了旧 token），不强制重新生成，但提供 diff 视图。</p>
+
+      <h3 class="sub-title"><span class="id">8.2</span>权限</h3>
+      <p>v0.1 三级角色：<code class="inline">brand_admin</code>（写 Brand Source、批 PR）/ <code class="inline">designer</code>（读全部、写 Generate / Asset / 提 PR）/ <code class="inline">viewer</code>（只读，给 PM/agency）。SSO 接入 viaim 内部认证。</p>
+
+      <h3 class="sub-title"><span class="id">8.3</span>评估循环</h3>
+      <p>每个产物收集 <code class="inline">adopted / rejected / iterated</code> 三态信号。看板呈现：哪些场景采纳率高、哪些 prompt/template 反复被改。这是 fine-tune 训练数据来源，也是 PM 决策依据。<b>v0.1 必做最简版</b>（只记录信号，看板 Phase 2）。</p>
+
+      <h3 class="sub-title"><span class="id">8.4</span>可观测</h3>
+      <p>API 调用日志、生成耗时、LLM token 消耗、成本归因到用户/项目。预算告警（每月 LLM 花费阈值）。</p>
+
+      <h3 class="sub-title"><span class="id">8.5</span>性能基线</h3>
+
+      <table class="spec">
+        <thead><tr><th>操作</th><th>P50</th><th>P95</th><th>备注</th></tr></thead>
+        <tbody>
+          <tr><td>Brand 加载</td><td>&lt; 200ms</td><td>&lt; 500ms</td><td>纯 DB 查询</td></tr>
+          <tr><td>Asset 检索（标签）</td><td>&lt; 300ms</td><td>&lt; 800ms</td><td>500 资产规模</td></tr>
+          <tr><td>Asset 检索（自然语言）</td><td>&lt; 800ms</td><td>&lt; 1.5s</td><td>含 embedding 计算</td></tr>
+          <tr><td>L1 Prompt 生成</td><td>&lt; 2s</td><td>&lt; 5s</td><td>一次 Claude 调用</td></tr>
+          <tr><td>L3 Template 渲染</td><td>&lt; 3s</td><td>&lt; 6s</td><td>含 lint</td></tr>
+          <tr><td>cmd+K 召唤</td><td>&lt; 50ms</td><td>&lt; 100ms</td><td>UI 即时</td></tr>
+          <tr><td>cmd+K 自然语言识别</td><td>&lt; 1.5s</td><td>&lt; 3s</td><td>异步显示结果</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- =================== CH 9 ROADMAP =================== -->
+    <section class="chapter" id="ch-9">
+      <div class="ch-num">09 · roadmap</div>
+      <h2 class="ch-title">Phase Roadmap</h2>
+      <p class="ch-lead">五个阶段，本 PRD 仅展开 Phase 1。Phase 2-5 列出方向便于 stakeholder 心中有数。</p>
+
+      <div class="stats">
+        <div class="stat"><div class="v">5</div><div class="k">总阶段数</div></div>
+        <div class="stat"><div class="v">4-6w</div><div class="k">phase 1 周期</div></div>
+        <div class="stat"><div class="v">5</div><div class="k">phase 1 P0 模块</div></div>
+        <div class="stat"><div class="v">3</div><div class="k">phase 1 模板数</div></div>
+      </div>
+
+      <div class="roadmap">
+        <div class="phase-row">
+          <div class="phase-bar">
+            <div class="ph-id">PHASE 0</div>
+            <div class="ph-name">地基</div>
+            <div class="ph-time">2 周</div>
+          </div>
+          <div class="phase-body">
+            <div class="deliv"><b>交付：</b>brand.schema.json + asset.schema.json + output.schema.json 锁定。基础 API 框架 + DB schema + 内部 Git MD 仓库。</div>
+            <div class="modules-tag">
+              <span class="tag">schema</span><span class="tag">db</span><span class="tag">git-mirror</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase-row">
+          <div class="phase-bar" style="background:var(--accent-soft);">
+            <div class="ph-id" style="color:var(--accent)">PHASE 1</div>
+            <div class="ph-name">v0.1 范围</div>
+            <div class="ph-time">4-6 周</div>
+          </div>
+          <div class="phase-body">
+            <div class="deliv"><b>交付：</b>Brand Source（8 段）+ Asset Library（带打标）+ Generate Studio（L1/L2/L3 三档，3 个模板）+ Compliance（5 条 lint）+ ⌘K Palette + Figma Plugin（薄一层）+ API v1。</div>
+            <div class="deliv"><b>用户验收：</b>设计师能 5 分钟产出符合品牌规范的双 11 微博海报；PM 能用 cmd+K 自助做 PRD 封面；agency 能拿到 Mini MD brief。</div>
+            <div class="modules-tag">
+              <span class="tag p0">brand-source</span><span class="tag p0">asset-lib</span><span class="tag p0">studio L1+L2+L3</span><span class="tag p0">compliance</span><span class="tag p0">cmdk</span><span class="tag amber">figma-plugin</span><span class="tag p0">api-v1</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase-row">
+          <div class="phase-bar">
+            <div class="ph-id">PHASE 2</div>
+            <div class="ph-name">扩大用户面</div>
+            <div class="ph-time">4 周</div>
+          </div>
+          <div class="phase-body">
+            <div class="deliv"><b>交付：</b>L3 模板从 3 个扩到 8-10 个（电商详情图、邮件头图、活动落地页等）。审批流。视觉相似检索。Figma 提取 tokens。Output Archive 看板。</div>
+            <div class="modules-tag">
+              <span class="tag">templates+</span><span class="tag">approval</span><span class="tag">visual-search</span><span class="tag">archive-board</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase-row">
+          <div class="phase-bar">
+            <div class="ph-id">PHASE 3</div>
+            <div class="ph-name">L4 + viaim 接入</div>
+            <div class="ph-time">6-8 周</div>
+          </div>
+          <div class="phase-body">
+            <div class="deliv"><b>交付：</b>L4 端到端图像生成（六层管线）单独立项 · 2 工程师投入。viaim 主产品（Vitana）接入 brand API 实现品牌一致 UI。Studio Canvas 作为 L4 卫星形态出现。</div>
+            <div class="modules-tag">
+              <span class="tag">L4 pipeline</span><span class="tag">comfyui</span><span class="tag">vitana-integration</span><span class="tag">canvas-mode</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase-row">
+          <div class="phase-bar">
+            <div class="ph-id">PHASE 4</div>
+            <div class="ph-name">优化 + 探索产品化</div>
+            <div class="ph-time">持续</div>
+          </div>
+          <div class="phase-body">
+            <div class="deliv"><b>交付：</b>L4 LoRA fine-tune（用 Output Archive 训练）。多 brand 切换器开放。agency portal。探索 SaaS 化路径。</div>
+            <div class="modules-tag">
+              <span class="tag">lora-finetune</span><span class="tag">multi-brand</span><span class="tag">agency-portal</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================== CH 10 未决问题 =================== -->
+    <section class="chapter" id="ch-10">
+      <div class="ch-num">10 · open questions</div>
+      <h2 class="ch-title">未决问题</h2>
+      <p class="ch-lead">以下 5 个问题在评审时需要对齐。在确认前，PRD 中给出的是<b>推荐值</b>，最终值待定。</p>
+
+      <div class="q-card">
+        <span class="q-num">Q1</span>
+        <div class="q-title">Brand Source 第一版还要不要包含特殊维度</div>
+        <div class="q-desc">v0.1 已含 9 段中的 8 段（暂缓 Motion）。viaim 是否还有特殊维度？例如：声音品牌（earphone 产品的提示音、UI 音效）、产品工业设计语言（Aura/Mate 硬件造型规范）。</div>
+        <div class="q-options"><span class="q-option">默认 8 段足够</span><span class="q-option">加声音品牌</span><span class="q-option">加 ID 语言</span><span class="q-option">两个都加</span></div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q2</span>
+        <div class="q-title">MD 仓库放哪</div>
+        <div class="q-desc">DB 是源，MD 是物化视图。这个 MD 仓库放哪？影响 agency 能否直接订阅、影响审批流如何设计。</div>
+        <div class="q-options"><span class="q-option">GitHub 私有仓</span><span class="q-option">Gitee 私有仓</span><span class="q-option">viaim 内部 Git</span><span class="q-option">不用 Git，纯 S3 文件</span></div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q3</span>
+        <div class="q-title">Figma 插件优先级</div>
+        <div class="q-desc">v0.1 推荐放 Phase 1 末。但开发周期不短，如果设计师团队 &lt; 5 人，推迟到 Phase 2 初更划算。当前设计师团队规模？</div>
+        <div class="q-options"><span class="q-option">&lt; 5 人 → 推迟</span><span class="q-option">5-10 人 → 保留</span><span class="q-option">&gt; 10 人 → 提前</span></div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q4</span>
+        <div class="q-title">现有资产规模</div>
+        <div class="q-desc">Aura/Mate 现有的渲染图、3D 文件、过往交付物，规模大概多大？这决定 Asset Library 检索复杂度和初始数据迁移工作量。</div>
+        <div class="q-options"><span class="q-option">&lt; 200</span><span class="q-option">200-1000</span><span class="q-option">1000-5000</span><span class="q-option">&gt; 5000</span></div>
+      </div>
+
+      <div class="q-card">
+        <span class="q-num">Q5</span>
+        <div class="q-title">L4 工程资源</div>
+        <div class="q-desc">L4 端到端图像生成排在 Phase 3，需要 2 工程师 × 6-8 周才能达到 Lovart 60-70% 水准。这个投入能给吗？决定 L4 排到 Phase 3 还是更后。</div>
+        <div class="q-options"><span class="q-option">2 人 6-8 周 OK</span><span class="q-option">1 人 12 周</span><span class="q-option">资源紧张，无限延后</span></div>
+      </div>
+
+      <div class="callout amber">
+        <div class="callout-label">评审建议</div>
+        <p>这 5 个问题最好在一次会议内全部对齐。Q4 是<b>最关键的</b>——它直接决定了 v0.1 启动后第一个月的工作量。</p>
+      </div>
+    </section>
+
+    <!-- =================== CH 11 附录 =================== -->
+    <section class="chapter" id="ch-11">
+      <div class="ch-num">11 · appendix</div>
+      <h2 class="ch-title">附录</h2>
+
+      <h3 class="sub-title"><span class="id">A.1</span>术语表</h3>
+
+      <table class="spec">
+        <tbody>
+          <tr><td><b>Brand Source</b></td><td>品牌源，machine-readable 的 source of truth，含 tokens / voice / 视觉规范</td></tr>
+          <tr><td><b>Asset Library / DAM</b></td><td>产品资产库 (Digital Asset Management)，含渲染图 / 3D / 摄影</td></tr>
+          <tr><td><b>Output Archive</b></td><td>历史交付物归档，作为 fine-tune 训练数据来源</td></tr>
+          <tr><td><b>L1 / L2 / L3 / L4</b></td><td>四档产物，按 AI 自主度排序：Prompt / Mini MD / 模板 / 端到端</td></tr>
+          <tr><td><b>DESIGN.md</b></td><td>9 段式品牌描述格式，开源生态事实标准（awesome-design-md）</td></tr>
+          <tr><td><b>cmd+K Palette</b></td><td>命令面板，Linear / Notion / Figma 同款机制</td></tr>
+          <tr><td><b>token</b></td><td>设计变量原子单位（颜色 / 字号 / 间距）</td></tr>
+          <tr><td><b>brand_admin</b></td><td>有权修改 Brand Source 的角色</td></tr>
+          <tr><td><b>compliance lint</b></td><td>品牌合规自动检查</td></tr>
+          <tr><td><b>impact analysis</b></td><td>规范升级时的影响分析（哪些历史产物引用了旧版本）</td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-title"><span class="id">A.2</span>关键参考</h3>
+
+      <table class="spec">
+        <tbody>
+          <tr><td>开源 design-md</td><td><span class="mono">github.com/voltagent/awesome-design-md</span></td></tr>
+          <tr><td>Open Design</td><td><span class="mono">github.com/nexu-io/open-design</span></td></tr>
+          <tr><td>Open CoDesign</td><td><span class="mono">opencoworkai.github.io/open-codesign</span></td></tr>
+          <tr><td>cmdk 库</td><td><span class="mono">github.com/pacocoursey/cmdk</span></td></tr>
+          <tr><td>ComfyUI</td><td><span class="mono">github.com/comfyanonymous/ComfyUI</span></td></tr>
+          <tr><td>PosterCraft</td><td><span class="mono">github.com/MeiGen-AI/PosterCraft</span></td></tr>
+          <tr><td>Satori</td><td><span class="mono">github.com/vercel/satori</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-title"><span class="id">A.3</span>变更日志</h3>
+
+      <table class="spec">
+        <thead><tr><th>版本</th><th>日期</th><th>变更</th></tr></thead>
+        <tbody>
+          <tr><td><b>v0.1-draft</b></td><td>2026-05-02</td><td>首发。形态决策为 Brand Console + cmd+K Palette。Phase 1 范围确定。</td></tr>
+          <tr>
+            <td><b>v0.1.1</b></td>
+            <td>2026-05-02</td>
+            <td>
+              <b>实现迁移 · 把 PRD 落到可运行 SPA</b><br>
+              · 新增 §5.8 <b>Settings</b> 模块（PRD 缺口补全）：LLM API · Embedding · Image Gen · 行为开关 · 危险区<br>
+              · §5.1 Brand Source 实装 9 段编辑器 + draft/publish 状态机 + 影响分析<br>
+              · §5.2 Asset Library 实装：拖拽上传、IndexedDB 二进制存储、强制 schema enum 打标、组合筛选<br>
+              · §5.3 Generation Studio L1/L2 实装 LLM 调用 + 本地模板兜底；L3 实装 HTML/SVG 模板渲染（Satori 路径）+ PNG 导出；L4 预留接口<br>
+              · §5.4 Compliance 5 条 lint 规则（R1-R5）实装 + 底部状态条<br>
+              · §5.5 ⌘K Command Palette 实装：跳转/新建/搜索/切换/动作 + LLM 自然语言意图（含关键字 fallback）<br>
+              · 新增 §A.4 部署与运行：纯静态文件 · 一键 <code class="inline">./start.sh</code> · 数据存 localStorage + IndexedDB
+            </td>
+          </tr>
+          <tr>
+            <td><b>v0.1.2</b></td>
+            <td>2026-05-02</td>
+            <td>
+              <b>Layout 重构 · 对齐 Brand Console mockup</b><br>
+              · §4.2 信息架构调整：单列侧边栏 → <b>双列「图标列 64px + 主导航 220px」</b>（workspace switcher 预留多 brand 入口）<br>
+              · §4.2 全局元素扩展：顶栏新增 metadata 条 <code class="inline">brand vX · N assets · brand lock: ON/OFF</code> + brand 版本切换器<br>
+              · §5.3.1 Generation Studio L3：表单字段 → <b>pill 化「场景/配置 · 资产 · 品牌锁」三段</b>，输入即实时渲染<br>
+              · §5.4 底部状态条重设：左侧 lint 多项摘要（<code class="inline">✓ tokens 合规 / ✓ logo 留白 / ⚠ 文案超 N 字</code>）+ 右侧导出动作（<b>PNG / Figma / API</b>）<br>
+              · 新增 <b>§5.9 Templates 独立模块</b>（PRD §5.3 中模板列表抽离为顶层模块）<br>
+              · 新增 <b>§5.10 API &amp; SDK 浏览页</b>（PRD §5.7 端点的 in-app 文档形态）<br>
+              · 导航徽章：每个模块右侧 mono 计数（v1.0 / 487 / 12 / 3⚠ / 28 / —）+ RECENT 最近产物快速跳转<br>
+              · Tab 标识规范：L1 · Prompt / L2 · Mini MD / L3 · Template / L4 · Image Gen（统一 mono 前缀分隔符）
+            </td>
+          </tr>
+          <tr>
+            <td><b>v0.1.3</b></td>
+            <td>2026-05-02</td>
+            <td>
+              <b>排版精化 + i18n</b><br>
+              · <b>全局字号 −1px</b>（base 14 → 13；标题、按钮、徽章按比例同步缩小，最小不低于 9px）。<br>
+              &nbsp;&nbsp;&nbsp;影响范围：<code class="inline">styles.css</code> 87 处 · <code class="inline">modules.js</code> inline 样式 31 处。<br>
+              &nbsp;&nbsp;&nbsp;L3 模板渲染产物（社交卡 / 封面 / banner）的 brand-defined 字号<b>不缩小</b>（属于品牌设计系统，与 UI chrome 解耦）。<br>
+              · <b>新增界面语言切换 ·  中 / EN</b>：<br>
+              &nbsp;&nbsp;&nbsp;入口在顶栏 metadata 末端（<code class="inline">中 / EN</code> toggle）<br>
+              &nbsp;&nbsp;&nbsp;实现：新增 <code class="inline">i18n.js</code>，以中文为 key 的字典 + DOM 文本节点遍历替换<br>
+              &nbsp;&nbsp;&nbsp;翻译范围：导航 / 页头描述 / 按钮 / 表单 label / toast / 命令面板 / 底部状态条<br>
+              &nbsp;&nbsp;&nbsp;持久化：<code class="inline">localStorage.viaim_brand_os.lang</code><br>
+              &nbsp;&nbsp;&nbsp;不翻译：技术术语（L1-L4 / Geist / Anthropic / endpoint 等）· brand 业务字符串（产品名 · 用户填的内容）· 代码块
+            </td>
+          </tr>
+          <tr>
+            <td><b>v0.1.4</b></td>
+            <td>2026-05-02</td>
+            <td>
+              <b>i18n 默认语言修正：导航回归中文 source-of-truth</b><br>
+              · 修复 v0.1.3 残留问题：之前 HTML / JS 的<b>导航/侧边栏 eyebrow / 顶栏标题 / 命令面板跳转项</b>都硬编码为英文（Brand Source / Asset Library / Generate Studio / Settings / RECENT 等），导致中文模式下这些位置仍显示英文。<br>
+              · 修复方法：把所有「<b>UI 默认值改为中文</b>」（与 PRD 通篇术语对齐），i18n 字典反向映射「中文 → 英文」。<br>
+              · 影响文件：<code class="inline">index.html</code>（侧边栏导航）· <code class="inline">modules.js</code>（Modules.X.title）· <code class="inline">app.js</code>（eyebrowMap）· <code class="inline">cmdk.js</code>（跳转项）· <code class="inline">i18n.js</code>（新增 7 个中→英映射条目 + 兼容旧英文 key）<br>
+              · 中英对照（导航）：品牌源 / 资产库 / 生成工作台 / 合规 / 模板 / API &amp; SDK / 产物归档 / 设置 / PRD 文档 / 最近 ⇄ Brand Source / Asset Library / Generate Studio / Compliance / Templates / API &amp; SDK / Output Archive / Settings / PRD Doc / RECENT。<br>
+              · 保留英文术语：<code class="inline">API &amp; SDK</code>、<code class="inline">L1 / L2 / L3 / L4</code>、<code class="inline">PRD</code>（业内标准缩写，两语共用）。
+            </td>
+          </tr>
+          <tr>
+            <td><b>v0.1.11</b></td>
+            <td>2026-05-03</td>
+            <td>
+              <b>新增 §5.12 上市规划 · Launch Plan</b>（上市前的资产排期 + 复用规划，PRD 中此前缺位）<br>
+              · <b>设计动机</b>：新品上市需要并行准备 KV / 渲染图 / 商详 / 单页 / TVC / 广告 / 社交一整套素材，<b>各项备料周期不一</b>（TVC 拍摄 45 天，单页 7 天），<b>且上下游有大量复用</b>（风格 spec → 渲染图 → KV → 商详）。靠 Excel 排期 + Slack 同步极易遗漏与重做。本模块把这条链路结构化。<br>
+              <br>
+              · <b>schema</b>（每个 launch project）：<code class="inline">{ id, name, product, launch_date, regions, positioning, assets[] }</code>。每个 asset：<code class="inline">{ category, regions, lead_time_days, prep_end_offset, depends_on, reuse_from, status, assignee, notes }</code>。<br>
+              · <b>排期算法</b>：<code class="inline">prep_end = launch_date − prep_end_offset</code>，<code class="inline">prep_start = prep_end − lead_time_days</code>。可视化甘特把所有 asset 按 prep_end_offset 排序（越早交付越靠上）。<br>
+              · <b>复用图谱</b>：通过 <code class="inline">reuse_from[]</code> 双向索引出「被复用次数」最高的<b>高价值上游</b>（如 style spec / KV master），帮助决定「先打磨哪几条」。<br>
+              <br>
+              · <b>三视图</b>：<br>
+              &nbsp;&nbsp;📅 <b>甘特排期</b> — 横轴时间（含月份分隔 + 今日线 + 上市日 🚀 标识），纵轴资产。每条 bar 按 category 着色，hover 显示日期范围，点击打开编辑器。<br>
+              &nbsp;&nbsp;↻ <b>复用图谱</b> — 高复用上游 TOP 5（按下游引用计数排序）+ 完整复用矩阵表。<br>
+              &nbsp;&nbsp;≡ <b>资产清单</b> — 表格视图，可按状态 / 分类 / 区域排查。<br>
+              <br>
+              · <b>种子数据</b>：<code class="inline">seedMateLaunch()</code> 内置「Mate 2026 全球上市」项目，包含 <b>19 个资产</b>：<br>
+              &nbsp;&nbsp;◾ 风格起点：style spec（lead 14d / −75d）<br>
+              &nbsp;&nbsp;◾ 渲染：常规 + 创意角度（lead 21d / −50, −45d）<br>
+              &nbsp;&nbsp;◾ KV：master + 灯箱大屏适配（lead 14, 7d / −30, −21d）<br>
+              &nbsp;&nbsp;◾ 商详：独立站 / 天猫 / 京东 / 抖音 / Amazon（5 平台）<br>
+              &nbsp;&nbsp;◾ 广告：信息流多尺寸 + 搜索 SEM<br>
+              &nbsp;&nbsp;◾ 单页：中 / 英 / 日 / 德 4 语言<br>
+              &nbsp;&nbsp;◾ TVC：剧本 storyboard + 拍摄后期（lead 21+45d）<br>
+              &nbsp;&nbsp;◾ 社交：发布日全平台连发<br>
+              · 复用关系预设：style → 所有；render-std → kv / pdp / flyer / ad；kv-master → kv-billboard / ads / flyer；pdp-website → pdp-amazon / pdp-tmall；flyer-cn → flyer-en → flyer-jp/de；tvc-script → tvc-prod。<br>
+              <br>
+              · <b>UI 细节</b>：导航「上市规划」位于「生成工作台」之后；侧边徽章显示 <b>D-N 倒计时</b>（如 D-135 表示距上市 135 天）；甘特图带 9 种 category 色标；复用图谱用「上游核心 + 下游 chip」可视化「一次投入 · 多次复用」。<br>
+              · 编辑器 modal：可改名 / 调分类 / 调状态 / 调备料周期 + 提前于上市天数 / 多选复用上游 / 加备注 / 删除（删除时联动解除其他资产对它的依赖）。<br>
+              · 也能新建多个 launch project（如 Air 3 · 2027 春季）从下拉切换。
+            </td>
+          </tr>
+          <tr>
+            <td><b>v0.1.10.3</b></td>
+            <td>2026-05-03</td>
+            <td>
+              <b>Bug fix：节点关系表切换 target 时页面跳到顶部</b><br>
+              · 根因：所有节点关系操作（切 target / 调权重 / 增删边 / 改 threshold）都用 <code class="inline">ctx.navigate('settings')</code> 触发<b>全页重渲染</b>，导致 <code class="inline">window.scrollTo({ top: 0 })</code> 把视口拉回顶部。<br>
+              · 修复：新增 <code class="inline">refreshNodeGraphPanel(ctx)</code> 局部刷新——只替换 <code class="inline">#blockNodeGraph</code> 这一个块，重新绑定其内部监听，<b>不动其他 settings 块也不动滚动位置</b>。所有 7 处 navigate 调用改为 refreshNodeGraphPanel。<br>
+              · 同时修复：「重置为默认」之前用 <code class="inline">seedNodeGraph()</code>（局部作用域引用），改为 <code class="inline">window.seedNodeGraph()</code>（store.js 已暴露到 window）。
+            </td>
+          </tr>
+          <tr>
+            <td><b>v0.1.10.2</b></td>
+            <td>2026-05-03</td>
+            <td>
+              <b>Studio 4 个 tab 中英双语化 + tab 切换说明</b><br>
+              · v0.1.0 起 Studio 用 <code class="inline">L1 · Prompt / L2 · Mini MD / L3 · Template / L4 · Image Gen</code> 这种纯英文标签，对中文用户认知成本高。<br>
+              · 改造后每个 tab 增加中文副标签：<br>
+              &nbsp;&nbsp;<code class="inline">L1 · Prompt | 提示词</code>（工程级 prompt）<br>
+              &nbsp;&nbsp;<code class="inline">L2 · Mini MD | 设计简报</code>（结构化 Markdown brief）<br>
+              &nbsp;&nbsp;<code class="inline">L3 · Template | 模板渲染</code>（HTML/SVG 直出）<br>
+              &nbsp;&nbsp;<code class="inline">L4 · Image Gen | 图像视频</code>（端到端图像/视频）<br>
+              · 新增 <code class="inline">.studio-tab-hint</code> 区块：每次切 tab 自动展示<b>中文 + 英文双语说明</b>，让用户在每个层级都看到「这个档位是什么 / 用来做什么 / 谁来收尾」。<br>
+              · CSS 响应式：<code class="inline">@media (max-width: 700px)</code> 下中文副标签自动隐藏，仍保留 mouse hover title 提示。<br>
+              · 同时给每个 tab 加 <code class="inline">title</code> 属性提供更详细的 hover 说明，如 L4 提示「需配置 API」。
+            </td>
+          </tr>
+          <tr>
+            <td><b>v0.1.10.1</b></td>
+            <td>2026-05-03</td>
+            <td>
+              <b>裁剪 · 只保留视觉输出 skills</b><br>
+              · 用户反馈：v0.1.10 把 31 OD skills + 媒体 skills 拉进来后，混入了大量「与视觉体验无关」的输出（音频脚本 / PRD / 周报纪要 / 财报 / Runbook / OKR 文档 / 视频脚本文字稿）— 这些与 Brand OS 的视觉品牌定位错位。<br>
+              · <b>移除（10）</b>：<br>
+              &nbsp;&nbsp;◉ 整个「<b>音频</b>」类（4 个：podcast-script · voice-over · soundtrack-brief · audio-ad）<br>
+              &nbsp;&nbsp;¶ 文档类的纯文本（6 个）：pm-spec · meeting-notes · eng-runbook · team-okrs · finance-report · mini-md-brief<br>
+              &nbsp;&nbsp;▶ 视频类的纯文本脚本（2 个）：explainer · tutorial-outline<br>
+              · <b>新增（8）</b>来自 OD 的 visually distinctive skills：<br>
+              &nbsp;&nbsp;◫ 原型 +4：gamified-app · dating-web · blog-post · kanban-board<br>
+              &nbsp;&nbsp;★ 营销 +1：sprite-animation（像素动画 explainer）<br>
+              &nbsp;&nbsp;¶ 文档 +3：digital-eguide（双跨页电子手册）· critique（5 维视觉评分卡）· tweaks（AI 参数 panel）<br>
+              · <b>分类调整</b>：「文档」→「<b>印刷物</b> · Print」，专注视觉排版（封面 / 单页 / 跨页 / 评分卡 / 面板）。<br>
+              · 整体 7 类 → <b>6 类</b>（去音频）；总数 40 → <b>36</b>。<br>
+              · 后果：技能库的视觉调性更聚焦，与 Brand OS 的「品牌可视化资产中台」定位一致。下游若需要文字脚本，仍可走 Studio L2 的 Mini MD（设计 brief MD 仍是 viaim 内置）。
+            </td>
+          </tr>
+          <tr>
+            <td><b>v0.1.10</b></td>
+            <td>2026-05-03</td>
+            <td>
+              <b>整合 Open Design 7 大类输出 · 40 个代表 skill</b>（参考 <a href="https://github.com/nexu-io/open-design" target="_blank" style="color:var(--accent);">nexu-io/open-design</a> 31 skills × 9 scenarios 体系）<br>
+              · <b>设计动机</b>：v0.1.0 的 Studio 只有 L1/L2/L3/L4 四档（按 AI 自主度切分），但「按输出形态归类」更接近设计师日常思维；Open Design 已经把这套生态做成 31 skills × 9 scenarios。viaim Brand OS 借用其分类，但按「输出形态」重组为 <b>7 大类</b>。<br>
+              · <b>新增 <code class="inline">skills.js</code></b>：33 个代表 skill 目录，每个含 <code class="inline">{ id, category, name, desc, l_level, tpl_id?, prefill, based_on }</code>。<br>
+              · <b>7 大类映射</b>：<br>
+              &nbsp;&nbsp;◫ <b>原型 (7)</b>：web-prototype / dashboard / mobile-app / mobile-onboarding / docs-page / pricing-page / wireframe-sketch<br>
+              &nbsp;&nbsp;★ <b>营销 (7)</b>：social-card-1080 ✓ / banner-16-9 ✓ / social-carousel / magazine-poster / email-marketing / saas-landing / motion-frames<br>
+              &nbsp;&nbsp;▤ <b>Deck (4)</b>：simple-deck / guizang-ppt（来自 op7418/guizang-ppt-skill）/ pitch-deck / weekly-update<br>
+              &nbsp;&nbsp;¶ <b>文档 (8)</b>：pm-spec / doc-cover ✓ / meeting-notes / eng-runbook / team-okrs / finance-report / invoice / mini-md-brief<br>
+              &nbsp;&nbsp;▢ <b>图像 (5)</b>：gpt-image-2 / product-render / avatar-portrait / infographic / illustrated-map<br>
+              &nbsp;&nbsp;▶ <b>视频 (5)</b>：seedance-15s（ByteDance）/ hyperframes（heygen）/ product-reveal / explainer / tutorial-outline<br>
+              &nbsp;&nbsp;◉ <b>音频 (4)</b>：podcast-script / voice-over / soundtrack-brief / audio-ad<br>
+              · 「✓」标记的为<b>已实装</b>的 L3 HTML 模板（v0.1.0 内置 3 个）；其余 L3 显示「敬请期待」，但点击仍会打开 Studio L3 并提示「可用现有模板做近似」。<br>
+              <br>
+              · <b>UI 升级</b>：导航「模板」→「<b>技能库</b>」（计数从 3 → 33）。页面顶部 7 个分类 tab + 全部 tab。skill 卡片显示分类 icon / 名 / 描述 / L 级别徽章 / 来源 / featured 星标。<br>
+              · <b>启动流程</b>：点 skill 卡 → <code class="inline">launchSkill()</code> 设置 <code class="inline">Modules.studio.state.tab</code> 为对应 L 级别 + <code class="inline">Modules.studio.state.prefill</code> 注入 skill 的 example_prompt → 跳转 Studio → studioL1/L2/L3/L4 mount 时消费 prefill 并预填表单。预填后 prefill 自动清空（避免被下次误用）。<br>
+              · <b>Skill 来源标注</b>：每个 skill 写明 <code class="inline">based_on</code>（如 <code class="inline">open-design / web-prototype</code>、<code class="inline">viaim 内置</code>），保留版权脉络 — 与 Open Design「Skills are files, not plugins」的理念一致。<br>
+              <br>
+              · 后续可扩展：把 SKILLS 数组拆为可热加载文件（每个 skill 一个 .md / .json）+ 加 user-uploaded skill（参考 OD 的 SKILL.md 协议），让用户像 Open Design 一样「拖一个文件夹就成新 skill」。<br>
+              · 同时进一步对齐：v0.1.11 计划支持 OD 的 <code class="inline">design-system.requires</code> 字段，让 skill 声明「需要 brand 哪些段」并在节点关系图中可视化。
+            </td>
+          </tr>
+          <tr>
+            <td><b>v0.1.9.1</b></td>
+            <td>2026-05-03</td>
+            <td>
+              <b>v0.1.9 紧急修复：旧 draft 数据上崩溃</b><br>
+              · 报错：<code class="inline">(p.hardware_lines || []).map is not a function</code> · 品牌源进不去。<br>
+              · 根因：v0.1.9 加了 §11-§15 共 5 段，老 draft 数据没有这些字段；<code class="inline">d.product = d.product || {}</code> 兜底只到对象级别，但二级数组（如 hardware_lines）若曾是非数组类型（如旧版本写入了 string）会导致 <code class="inline">.map</code> 失败。<br>
+              · 修复 1 ·  新增 <code class="inline">normalizeBrandData(d)</code>：进入 brand 时把所有 15 段 + 二级嵌套（约 50 个数组/对象字段）<b>原地补齐到正确 shape</b>。在 <code class="inline">Store.getBrands()</code> 与 <code class="inline">Store.ensureDraft()</code> 双道入口都调用，无侵入式自动迁移。<br>
+              · 修复 2 ·  新增 <code class="inline">arr(x)</code> helper（不是数组就返回 []），<b>104 处</b> spec/editor 渲染中的 <code class="inline">(x.y || []).map</code> 改为 <code class="inline">arr(x.y).map</code>，渲染层多一层防御。<br>
+              · 修复后老 draft 的产品/命名/地域/场景/价值段会自动补全为空数组结构，编辑器与 spec 视图正常进入。
+            </td>
+          </tr>
+          <tr>
+            <td><b>v0.1.9</b></td>
+            <td>2026-05-03</td>
+            <td>
+              <b>三件大事：基于 viaim KB 扩 5 段 brand spec · Settings 加节点关系图 · LLM prompt 改造为 graph-driven</b><br>
+              <b>① 基于 KB-00..KB-08 扩 5 段（10 → 15 段）</b><br>
+              · §11 <b>Product · 产品架构</b>：3 条硬件线（Pro/Air/Kit）+ 6 个软件平台（iOS/Android/鸿蒙/Win/macOS/Web，含双区最低系统版本）+ 2 个 AI 引擎（Vitana / 万姆）+ 4 个旗舰功能（闪录 / 空间 / 同传 / 语音嘴替）。<br>
+              · §12 <b>Naming · 命名规范</b>：双区品牌对名（iFLYBUDS ⇄ viaim）、产品 pattern（cn 用版本号 / overseas 用专属名）、产品双区映射（Pro 3 ⇄ Recdot / Air 2 ⇄ OpenNote / Kit 2 ⇄ NoteKit）、功能双区映射（闪录 ⇄ FlashRec / 空间 ⇄ Space / 万姆 ⇄ Vitana / 同传 / 语音嘴替）+ 4 条命名规则。<br>
+              · §13 <b>Localization · 地域差异</b>：scope_markers（🇨🇳/🌍/通用）+ 文档标注规则 + 5 条功能差异（空间 / 同传 / 语音嘴替 / AI 名 / 订阅档）+ 海外订阅档（Basic / Pro / Ultra）。<br>
+              · §14 <b>Use Cases · 业务场景</b>：6 类业务场景（会议 / 通话 / 采访 / 谈判 / 讲座 / 一对一）含密度+时长+人数 · 7 类物理环境 · 7 种录音模式（含双区限定）。<br>
+              · §15 <b>Value Proposition · 核心价值</b>：one-liner + 完整 promise + 「捕捉→整理→聚合→转化」4 步价值模型 + 3 条差异化 + 3 条 anti-positioning。<br>
+              · 用户画像（§10）从 1 个扩到 4 个：高频会议人士 / 信息精确记录者 / 跨语言工作者 / 决策积累者（KB-01 5 类用户的 4 类映射）。<br>
+              · spec 视图与 spec.md 输出全部支持新段；编辑器引入通用 <code class="inline">data-add-arr / data-del-arr / data-bind-csv / data-list</code> 处理嵌套数组（避免每段写一遍 binding）。<br>
+              <br>
+              <b>② Settings 新增「节点关系表 · Node Graph」</b><br>
+              · 设计动机：之前 LLM prompt 硬编码注入哪些 brand 段（buildL1System / buildL2System），无法可视化、无法调权重、无法看「这个 prompt 由谁影响」。<br>
+              · 实现：节点类型（<code class="inline">brand_section</code> / <code class="inline">llm_prompt</code> / <code class="inline">output</code>）+ 加权有向边（<code class="inline">{from, to, weight: 0..1}</code>）+ threshold（默认 0.3）。<br>
+              · UI：左侧 target 列表（4 个 LLM prompt + 4 档 output），右侧选中后展示 inputs（按权重排序）+ 滑块调权重 + 增删边 + threshold 控制；权重 < threshold 的边淡化，提示「不会被注入」。<br>
+              · 默认配置（seedNodeGraph）：基于实操经验给 L1/L2/灵感分析的影响权重（如 voice→L2=0.95 · users→L1=0.9 · product→L2=0.85），用户可自行调整。<br>
+              · 持久化：localStorage.viaim_brand_os.settings.nodeGraph，可一键「重置为默认」。<br>
+              <br>
+              <b>③ LLM prompt 改造为 graph-driven</b><br>
+              · 新增 <code class="inline">brandContextFromGraph(brand, targetId)</code> + <code class="inline">renderBrandSegment(d, seg, detail)</code>：按权重决定<b>注入与详尽程度</b>（≥0.7 full / ≥0.5 medium / ≥threshold short / 否则不注入）。<br>
+              · L1 / L2 / 灵感池分析的 system prompt 都已切到 graph 路径。<br>
+              · 这把品牌系统从「硬编码 9 字段注入」升级到「用户可调配的 15 段 × 加权 graph」，每个 prompt 的「receptive field」可独立配置。<br>
+              <br>
+              · ENUMS.brand_sections 从 10 个扩到 15 个（灵感池建议改动也能命中新段）。<br>
+              · §5.1 PRD 章节同步更新为「15 段式」。<br>
+              · 总条目（schema 维度）从 v0.1.0 的 ~30 字段 → v0.1.9 的 ~120 字段。
+            </td>
+          </tr>
+          <tr>
+            <td><b>v0.1.8</b></td>
+            <td>2026-05-03</td>
+            <td>
+              <b>三件相互关联的修复 / 新增</b><br>
+              <b>① bug fix · md 文件上传后无法提交</b><br>
+              · 根因：<code class="inline">.inbox-add.open</code> 的 <code class="inline">max-height: 360px</code> 在加入文件区后裁剪了底部按钮，<code class="inline">overflow:hidden</code> 让"抓取并入库"按钮不可点。<br>
+              · 修复：<code class="inline">max-height: 1200px</code> + <code class="inline">overflow: visible</code>，依赖外层 .page 的滚动；同时加固拖放（document 级 dragover/drop preventDefault 防误打开文件、dragenter/dragleave 边界判断、文件类型 toast 反馈）。<br>
+              <b>② 导出 spec 加预览</b><br>
+              · 之前点「↓ 导出 spec.md」直接下载，无法预审。<br>
+              · 现在弹「导出预览」modal：左 tab 切换「渲染预览 / Markdown 原文」，右上角「复制 / ↓ 下载 .md / 关闭」。<br>
+              · 渲染：内置极简 Markdown 渲染器 <code class="inline">renderMarkdownLite()</code>（标题 / 列表 / 表格 / 引用 / 代码块 / 行内格式），无第三方依赖。<br>
+              <b>③ Brand Source 新增 §10 Users · 用户信息</b>（PRD 重大补强）<br>
+              · 新增维度：主画像（label / age / description / scenes / needs / pain_points / values）+ 多个次画像（同字段）+ 反向画像（label / reason）。<br>
+              · 编辑器：<code class="inline">data-bind</code> 升级为支持点路径含数字索引（如 <code class="inline">users.secondary_personas.0.label</code>）、新增 <code class="inline">data-list</code> attr（textarea 多行 ↔ array），允许动态增删次/反向画像。<br>
+              · Spec 视图：每个 persona 一张 card，shows label + age + 一句话画像引用块 + 4 列网格（场景/需求/痛点/价值观，价值观以 pill 显示）；反向画像用红条样式。<br>
+              · spec.md 导出：新增「§10 Users · 用户信息」一节，每位 persona 用 H3 + 引用 + bullet 列表渲染。<br>
+              · <b>关键：把 users 注入所有 LLM prompt</b>（L1 / L2 / 灵感分析 system prompt）作为 <code class="inline">TARGET AUDIENCE</code> 段，让生成产物自动按目标受众的 scenes/values 调性来产出。<br>
+              · brand_sections enum 从 9 段扩到 10 段，灵感池的 LLM 分析也能识别 <code class="inline">users</code> 段为可建议改动对象（用户研究类文章/报告将自动映射到这一段）。<br>
+              · §5.1 章节相应从「9 段式」升级为「10 段式」，PRD 与实现同步。
+            </td>
+          </tr>
+          <tr>
+            <td><b>v0.1.7</b></td>
+            <td>2026-05-03</td>
+            <td>
+              <b>灵感池新增 md 文件上传 + Brand Source 已发布版本只读完整视图</b><br>
+              <b>① 灵感池 file ingest</b><br>
+              · 支持 <code class="inline">.md / .markdown / .mdx / .txt</code> 文件，单个 ≤ 2MB，多文件批量。<br>
+              · UI：URL/粘贴区下方新增「拖拽 / 点击上传」区，支持文件 chip 预览与单条移除。<br>
+              · 入库行为：文件类型 → <code class="inline">type='article'</code>；文件名 → 标题；正文 → <code class="inline">content</code> + <code class="inline">file: { name, size, format }</code> 元数据。<br>
+              · <code class="inline">detectSourceType()</code> 增加 fileName 参数，识别 md 扩展名。<br>
+              <b>② Brand Source 状态分叉视图</b><br>
+              · 之前 Brand Source 进入即 <code class="inline">ensureDraft()</code>，无法看到「已发布完整版」。<br>
+              · 现在 <code class="inline">Modules.brand</code> 按 <code class="inline">currentVersion.status</code> 分叉：<code class="inline">draft</code> → 编辑器（原行为）；<code class="inline">published</code> / <code class="inline">deprecated</code> → <b>只读 spec 视图</b>。<br>
+              · Spec 视图渲染：版本元信息卡（version / published_at / published_by / change_note / based_on / previous_version）+ 9 段完整渲染（色板可视化、字号 scale demo、间距 bar、do/don't 双栏、反例红条等）。<br>
+              · 顶部动作：<code class="inline">↓ 导出 spec.md</code>（生成完整 Markdown 品牌手册）+ <code class="inline">+ 基于此版本编辑</code>（自动创建新 draft 并跳转到编辑器）。<br>
+              · 切换视图：通过顶栏 brand 版本下拉选 draft/published 即可在两态间切换，不需要额外开关。<br>
+              · 兼容灵感池：v0.1.5 中 typography.cn_rules 等灵感池合并的字段在 spec 视图自动渲染（用 spec-pre 块展示）。
+            </td>
+          </tr>
+          <tr>
+            <td><b>v0.1.6</b></td>
+            <td>2026-05-03</td>
+            <td>
+              <b>LLM provider 升级为 preset 表 · 新增 DeepSeek</b><br>
+              · 之前 provider 下拉只有 <code class="inline">OpenAI 兼容</code> / <code class="inline">Anthropic</code> 两项，DeepSeek 用户需手动改 endpoint + model。<br>
+              · 现在引入 <code class="inline">LLM_PRESETS</code> 常量表（<code class="inline">api.js</code> 顶部）作为<b>单一事实源</b>：<br>
+              <pre class="code" style="margin:6px 0;">{
+  openai:    { label, endpoint, default_model, model_examples, protocol, docs, note },
+  deepseek:  { ... protocol: <span class="s">'openai'</span> },   <span class="c"># OpenAI 兼容 → 直接复用 _openaiChat</span>
+  anthropic: { ... protocol: <span class="s">'anthropic'</span> },
+}</pre>
+              · UI 改动：provider 下拉<b>遍历 PRESETS</b>渲染；选中后 hint / 推荐 model / 文档链接随之更新；<br>
+              &nbsp;&nbsp;&nbsp;切换 provider 时若用户当前的 endpoint/model 是任一已知预设默认值（即未自定义），<b>自动套用新预设</b>；否则保留用户值。<br>
+              &nbsp;&nbsp;&nbsp;新增「<b>↺ 应用预设</b>」按钮，强制按当前 provider 重置 endpoint + 默认 model。<br>
+              · 路由：<code class="inline">chat()</code> 按 <code class="inline">protocol</code> 分支：<code class="inline">openai</code>/<code class="inline">deepseek</code>/任何兼容协议 → <code class="inline">_openaiChat</code>；<code class="inline">anthropic</code> → <code class="inline">_anthropicChat</code>。<br>
+              · DeepSeek 默认配置：<code class="inline">endpoint=https://api.deepseek.com/v1</code> · <code class="inline">model=deepseek-chat</code> · 推荐 <code class="inline">deepseek-chat</code>（V3）/ <code class="inline">deepseek-reasoner</code>（R1）。<br>
+              · 扩展性：未来加 Moonshot / 通义 / Groq 只需在 <code class="inline">LLM_PRESETS</code> 加一行，UI 自动出现新选项，无须改其他文件。
+            </td>
+          </tr>
+          <tr>
+            <td><b>v0.1.5</b></td>
+            <td>2026-05-03</td>
+            <td>
+              <b>新增 §5.11 Inspiration Pool · 灵感池</b>（PRD 缺口补全）<br>
+              · 动机：Brand Source 之前只能从空白手填。引入「外部资源 → AI 分析 → 合并 brand」的上游通路，让 brand evolution 可溯源。<br>
+              · 资源类型：<code class="inline">url</code> / <code class="inline">github</code> / <code class="inline">tool</code> / <code class="inline">article</code> / <code class="inline">snippet</code>（自动识别）。<br>
+              · 抓取代理：<b>Jina Reader</b>（免鉴权 / CORS 友好 / 返回干净 Markdown）。可在 Settings 改 endpoint。<br>
+              · 状态机：<code class="inline">inbox → fetched → analyzing → reviewed → applied | rejected</code>。<br>
+              · LLM 结构化分析：严格 JSON 输出 <code class="inline">{summary, brand_sections, key_takeaways, applicable_rules, suggested_brand_updates, risk_or_caveats}</code>，未配置 LLM 时基于 URL 关键字做粗分类兜底。<br>
+              · 「合并到 Brand Source 草案」：用户勾选 patch → <code class="inline">applyPatchToObject</code> 按 set/append/merge 操作 → 自动写入 draft 的 <code class="inline">change_note</code> + source 的 <code class="inline">applied_to[]</code>，实现「来源 ⇆ brand 版本」双向追溯。<br>
+              · 新增导航：「<b>灵感池</b>」位于 Brand Source 之前（feeder 角色）。<br>
+              · 新增 schema：<code class="inline">source.schema.json</code> + 5 个 ENUM（type / status / brand_sections）。<br>
+              · 设置：<code class="inline">fetch.reader_endpoint</code> / <code class="inline">fetch.max_chars</code> / <code class="inline">fetch.llm_truncate_chars</code> / <code class="inline">behaviour.auto_fetch_on_paste</code>。<br>
+              · 端到端验证：W3C clreq → typography.cn_rules ✓ · ibelick/ui-skills → components 启发 ✓
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-title"><span class="id">A.4</span>部署与运行（v0.1.1+ 新增）</h3>
+
+      <p>v0.1.x 实现版采用纯静态部署（无 build step），便于内部快速试用。文件结构：</p>
+
+<pre class="code"><span class="c"># /viaim-brand-os/</span>
+index.html       <span class="c"># 应用 shell（240 + 220 + 1fr 三列布局）</span>
+prd.html         <span class="c"># 本 PRD 嵌入为「PRD 文档」页</span>
+styles.css       <span class="c"># 全局样式 + 设计 token</span>
+i18n.js          <span class="c"># 中/英双语字典 + DOM 翻译（v0.1.3+）</span>
+store.js         <span class="c"># 数据层 schema + localStorage + IndexedDB</span>
+api.js           <span class="c"># LLM / Embedding / Image API 封装 + fallback</span>
+templates.js     <span class="c"># L3 模板渲染（HTML/SVG）</span>
+modules.js       <span class="c"># 页面模块（home / brand / assets / studio / compliance / archive / settings / templates / api / docs）</span>
+cmdk.js          <span class="c"># ⌘K 命令面板</span>
+app.js           <span class="c"># 路由与全局快捷键</span>
+start.sh         <span class="c"># 一键启动（python3 -m http.server）</span></pre>
+
+      <table class="spec">
+        <thead><tr><th>项</th><th>位置</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td><b>Brand 版本</b></td><td>localStorage</td><td>含 draft/published 历史</td></tr>
+          <tr><td><b>Asset metadata</b></td><td>localStorage</td><td>JSON 数组</td></tr>
+          <tr><td><b>Asset binary</b></td><td>IndexedDB</td><td>store=files，单个 ≤ 10MB</td></tr>
+          <tr><td><b>Output Archive</b></td><td>localStorage</td><td>含 refs.brand_version 用于影响分析</td></tr>
+          <tr><td><b>Settings · API key</b></td><td>localStorage</td><td>仅本地，<b>永不上传</b></td></tr>
+          <tr><td><b>语言偏好</b></td><td>localStorage</td><td><code class="inline">viaim_brand_os.lang</code> = zh|en</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout amber">
+        <div class="callout-label">迁移路径</div>
+        <p>当 v0.1.x 内部试用通过、需要切到 server 模式（多用户协作）时，<b>仅需把 <code class="inline">window.Store</code> 与 <code class="inline">window.Api</code> 的 facade 替换为 fetch 实现</b>，UI 层（modules.js / templates.js / cmdk.js / styles.css）无需改动。这印证 PRD §5.7「API-first，UI 是 client」的架构纪律是有效的。</p>
+      </div>
+    </section>
+
+    <!-- =================== FOOTER =================== -->
+    <footer class="foot">
+      <div><b>viaim Brand OS</b> · PRD v0.1 · draft</div>
+      <div>2026 · 05 · 02 · Tang × Claude</div>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  // tab switching for L1-L4
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+      const group = btn.closest('.tab-group');
+      group.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+      group.querySelectorAll('.tab-pane').forEach(p => p.classList.toggle('active', p.dataset.pane === tab));
+    });
+  });
+
+  // scrollspy
+  const sections = document.querySelectorAll('section.chapter, .module-section');
+  const tocLinks = document.querySelectorAll('.toc-link, .toc-sub');
+  const progressBar = document.getElementById('progress');
+
+  function updateScrollspy() {
+    const scrollY = window.scrollY;
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = Math.min((scrollY / docH) * 100, 100);
+    progressBar.style.width = progress + '%';
+
+    let current = '';
+    sections.forEach(s => {
+      const r = s.getBoundingClientRect();
+      if (r.top <= 120 && r.bottom >= 120) {
+        current = s.id;
+      }
+    });
+    if (current) {
+      tocLinks.forEach(l => {
+        const href = l.getAttribute('href');
+        l.classList.toggle('active', href === '#' + current);
+      });
+    }
+  }
+
+  window.addEventListener('scroll', updateScrollspy, { passive: true });
+  updateScrollspy();
+
+  // smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+</body>
+</html>

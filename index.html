@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>viaim Brand OS</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="shell">
+  <!-- ============ ICON RAIL ============ -->
+  <aside class="rail" id="rail">
+    <div class="rail-tile active" title="viaim">
+      <div class="rail-square"></div>
+    </div>
+    <div class="rail-tile placeholder" title="新建 workspace"></div>
+    <div class="rail-tile" title="第二品牌">
+      <div class="rail-square sm"></div>
+    </div>
+    <div class="rail-tile placeholder"></div>
+    <div class="rail-tile placeholder"></div>
+    <div class="rail-foot">
+      <button class="rail-add" id="railAdd" title="新增 workspace">+</button>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN NAV ============ -->
+  <aside class="nav" id="nav">
+    <div class="nav-head">
+      <div class="nav-eyebrow">
+        <span id="navEyebrow">生成工作台</span>
+        <span class="badge red" id="navEyebrowBadge" hidden>1</span>
+      </div>
+    </div>
+
+    <a class="nav-link" data-route="inbox">
+      <span class="lbl">灵感池</span>
+      <span class="cnt mono" id="cntInbox">0</span>
+    </a>
+    <a class="nav-link" data-route="brand">
+      <span class="lbl">品牌源</span>
+      <span class="cnt mono" id="cntBrand">v1.0</span>
+    </a>
+    <a class="nav-link" data-route="assets">
+      <span class="lbl">资产库</span>
+      <span class="cnt mono" id="cntAssets">0</span>
+    </a>
+    <a class="nav-link" data-route="studio">
+      <span class="lbl">生成工作台</span>
+      <span class="cnt mono" id="cntStudio">0</span>
+    </a>
+    <a class="nav-link" data-route="launch">
+      <span class="lbl">上市规划</span>
+      <span class="cnt mono" id="cntLaunch">—</span>
+    </a>
+    <a class="nav-link" data-route="compliance">
+      <span class="lbl">合规</span>
+      <span class="cnt mono" id="cntCompliance">—</span>
+    </a>
+    <a class="nav-link" data-route="templates">
+      <span class="lbl">技能库</span>
+      <span class="cnt mono" id="cntTemplates">33</span>
+    </a>
+    <a class="nav-link" data-route="api">
+      <span class="lbl">API &amp; SDK</span>
+      <span class="cnt mono">—</span>
+    </a>
+    <a class="nav-link" data-route="archive">
+      <span class="lbl">产物归档</span>
+      <span class="cnt mono" id="cntArchive">0</span>
+    </a>
+
+    <div class="nav-section">最近</div>
+    <div id="recentList"></div>
+
+    <div class="nav-foot">
+      <a class="nav-link sub" data-route="settings"><span class="lbl">设置</span><span class="cnt mono">⚙</span></a>
+      <a class="nav-link sub" data-route="docs"><span class="lbl">PRD 文档</span><span class="cnt mono">¶</span></a>
+      <div class="cmdk-hint" id="openCmdk">
+        <span>命令面板</span>
+        <span class="kbd">⌘ K</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+    <header class="topbar">
+      <h1 class="topbar-title" id="pageTitle">主页</h1>
+      <div class="topbar-meta mono" id="topbarMeta"></div>
+    </header>
+
+    <div class="page" id="page"></div>
+  </main>
+</div>
+
+<!-- compliance status bar -->
+<div id="complianceBar"></div>
+
+<!-- toast stack -->
+<div class="toast-stack" id="toastStack"></div>
+
+<!-- cmdk portal -->
+<div id="cmdkPortal"></div>
+
+<script src="i18n.js"></script>
+<script src="store.js"></script>
+<script src="api.js"></script>
+<script src="templates.js"></script>
+<script src="skills.js"></script>
+<script src="modules.js"></script>
+<script src="cmdk.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
