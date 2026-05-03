@@ -2,6 +2,14 @@
 
 > 把原 PRD（v0.1）落到一个可在浏览器中真实操作的 SPA。所有数据保存在你本地浏览器，不上传任何服务器。
 
+## 在线访问
+
+🚀 **[neoedon.github.io/viaim-brand-os](https://neoedon.github.io/viaim-brand-os/)**
+
+仓库：[github.com/neoedon/viaim-brand-os](https://github.com/neoedon/viaim-brand-os)
+
+纯静态部署 · 无 build step · 所有数据保存在浏览器 localStorage + IndexedDB。
+
 ## 一句话定位
 
 把 PRD 的「图」变成「能用的产品」。Phase 1 范围中除「Figma Plugin」外全部模块均已可操作。

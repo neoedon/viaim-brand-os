@@ -2062,6 +2062,48 @@ code.inline {
             </td>
           </tr>
           <tr>
+            <td><b>v0.1.12</b></td>
+            <td>2026-05-03</td>
+            <td>
+              <b>Studio 扩到 6 档 · L4 加音频 + 新增 L5 UI / L6 PPT · 上线 GitHub Pages</b><br>
+              <br>
+              <b>① L4 升级 Image Gen → Media（图像 / 视频 / 音频）</b><br>
+              · 模式 tab：▢ 图像 · Image · ▶ 视频 · Video · ◉ 音频 · Audio<br>
+              · 音频 9 个一键预设（覆盖硬件提示音 + UX 反馈音）：<br>
+              &nbsp;&nbsp;<b>硬件类</b>：🔌 开机提示音 · 🔗 连接成功 · 🔋 低电量 · 🎙 录音开始 · ⏹ 录音停止<br>
+              &nbsp;&nbsp;<b>UX 类</b>：👆 UX 点击 · ✓ UX 成功 · ✕ UX 错误 · 🔔 通知<br>
+              · 每个预设附详细 prompt（含频率 / 时长 / 调性 / 用途），点击即填入 prompt 框<br>
+              · 类型选择：SFX 音效 / TTS 语音 / Music 背景音乐<br>
+              · API 协议沿用 OpenAI 兼容 POST，把 endpoint 替换为 ElevenLabs / Stable Audio / Suno / OpenAI TTS 即可<br>
+              · 视频同样沿用：替换 endpoint 为 Seedance / Runway / HeyGen<br>
+              <br>
+              <b>② 新增 L5 · UI · 界面原型</b><br>
+              · 5 种类型：Web 落地页 1440×900 · Web Dashboard 1440×900 · Mobile 单屏 390×844 · Mobile 三屏流程 1170×844 · Tablet 1024×1366<br>
+              · 输入：产品 / 功能简介 + 主色覆盖 + 风格（calm-tech / editorial / dense-data / warm-soft）+ 设备框（无 / iPhone / 浏览器）<br>
+              · LLM 直出 self-contained HTML（inline CSS · 无 JS · 无外部资源），iframe 实时预览，可导出 .html 文件<br>
+              · system prompt 注入完整 brand context（按节点关系图权重）<br>
+              · 落到「输出原型稿」而非「图」 — 比 L3 模板更自由（不限于 3 个固定模板）<br>
+              <br>
+              <b>③ 新增 L6 · PPT · 品牌幻灯片</b><br>
+              · 两个模式：<br>
+              &nbsp;&nbsp;<b>单张模板</b>：选 cover / agenda / section / content / data / quote / closing 任一种 → 生成单张高质量幻灯片<br>
+              &nbsp;&nbsp;<b>多张连排（自动排版）</b>：输入主题 + 大纲（每行一个 slide 标题）+ 张数 + 风格 → 自动按品牌生成完整 deck（横向滑动 16:9）<br>
+              · 风格三选：minimal / magazine / data-heavy<br>
+              · 输出 self-contained HTML（含 1600×900 多 slide）· 可下载 · 可在浏览器打印 PDF<br>
+              · system prompt 引用 brand 字体 / 色板 / 价值主张 / voice，确保品牌一致<br>
+              <br>
+              <b>④ 节点关系图同步扩展</b><br>
+              · 新增节点：<code class="inline">prompt.l5_ui</code>、<code class="inline">prompt.l6_ppt</code>、<code class="inline">output.l5</code>、<code class="inline">output.l6</code><br>
+              · 默认权重映射：L5 重 components(0.95)/colors(0.95)/theme(0.9)/typography(0.85)；L6 重 theme(0.95)/typography(0.95)/colors(0.9)/voice(0.85)/value(0.85)<br>
+              · 用户可在 Settings 自定义这些权重，控制每个 prompt 收到的 brand 信息密度<br>
+              <br>
+              <b>⑤ 上线 GitHub Pages</b>：<br>
+              · 仓库：<a href="https://github.com/neoedon/viaim-brand-os" target="_blank" style="color:var(--accent);">github.com/neoedon/viaim-brand-os</a><br>
+              · 在线访问：<a href="https://neoedon.github.io/viaim-brand-os/" target="_blank" style="color:var(--accent);">neoedon.github.io/viaim-brand-os</a><br>
+              · 纯静态 · 无 build step · 所有数据在浏览器 localStorage / IndexedDB · API key 永不上传服务器
+            </td>
+          </tr>
+          <tr>
             <td><b>v0.1.11</b></td>
             <td>2026-05-03</td>
             <td>
