@@ -800,7 +800,8 @@ code.inline { font-family: 'Geist Mono', monospace; font-size: 11px; background:
   margin-left: 4px;
 }
 
-.studio-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
+.studio-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; min-width: 0; }
+.studio-layout > * { min-width: 0; }   /* 子元素也要 min-width:0，否则 grid 会按内容自然宽度撑大 */
 @media (max-width: 1000px) { .studio-layout { grid-template-columns: 1fr; } }
 
 .studio-panel {
@@ -891,6 +892,7 @@ code.inline { font-family: 'Geist Mono', monospace; font-size: 11px; background:
   display: flex; align-items: center; justify-content: center;
   overflow: hidden; position: relative;
   min-height: 380px;
+  min-width: 0;       /* flex 子元素默认 min-width:auto，会被 iframe 自然宽度撑大 */
 }
 .studio-preview .preview-frame .ph {
   font-family: 'Geist Mono', monospace; font-size: 11px;
@@ -898,7 +900,20 @@ code.inline { font-family: 'Geist Mono', monospace; font-size: 11px; background:
 }
 .studio-preview .preview-frame iframe {
   border: 0; background: white;
-  transform-origin: center center;
+}
+
+/* iframe 缩放 wrapper：把 layout box 收紧为缩放后的尺寸，避免横向溢出 */
+.iframe-scale-wrap {
+  position: relative;
+  overflow: hidden;
+  background: white;
+  box-shadow: var(--shadow-card);
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.iframe-scale-wrap iframe {
+  position: absolute; top: 0; left: 0;
+  display: block;
 }
 
 /* L4 mode tabs (image / video / audio) */

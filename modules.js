@@ -2531,10 +2531,12 @@ function studioL3(body, ctx) {
     lastHtml = html;
     lastTpl = tplNow;
     const wrap = document.getElementById('l3Preview');
-    const wrapWidth = wrap.clientWidth - 24;
-    const wrapHeight = wrap.clientHeight - 24;
+    const wrapWidth = Math.max(wrap.clientWidth - 24, 100);
+    const wrapHeight = Math.max(wrap.clientHeight - 24, 100);
     const scale = Math.min(wrapWidth / tplNow.size.w, wrapHeight / tplNow.size.h, 0.5);
-    wrap.innerHTML = `<iframe srcdoc="${escAttr(html)}" style="width:${tplNow.size.w}px;height:${tplNow.size.h}px;transform:scale(${scale});transform-origin:center center;" sandbox="allow-same-origin"></iframe>`;
+    const scaledW = Math.round(tplNow.size.w * scale);
+    const scaledH = Math.round(tplNow.size.h * scale);
+    wrap.innerHTML = `<div class="iframe-scale-wrap" style="width:${scaledW}px;height:${scaledH}px;"><iframe srcdoc="${escAttr(html)}" style="width:${tplNow.size.w}px;height:${tplNow.size.h}px;transform:scale(${scale});transform-origin:0 0;border:0;" sandbox="allow-same-origin"></iframe></div>`;
     const lint = Compliance.lintTemplate({ tpl: tplNow, slots: L3State.slots, brand, asset });
     document.getElementById('l3StatusHead').innerHTML = `${lint.status === 'pass' ? '' : `<span class="badge">${lint.violations.length}</span>`}`;
 
@@ -2893,10 +2895,11 @@ function studioL5(body, ctx) {
         html = `<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;font-family:'Geist','PingFang SC',sans-serif;}</style></head><body>${html}</body></html>`;
       }
       lastHtml = html;
-      const wrapWidth = out.clientWidth - 24;
-      const wrapHeight = out.clientHeight - 24;
+      const wrapWidth = Math.max(out.clientWidth - 24, 100);
+      const wrapHeight = Math.max(out.clientHeight - 24, 100);
       const scale = Math.min(wrapWidth / size.w, wrapHeight / size.h, 0.7);
-      out.innerHTML = `<iframe srcdoc="${escAttr(html)}" style="width:${size.w}px;height:${size.h}px;transform:scale(${scale});transform-origin:center center;border:1px solid var(--line);" sandbox="allow-same-origin"></iframe>`;
+      const sw = Math.round(size.w * scale), sh = Math.round(size.h * scale);
+      out.innerHTML = `<div class="iframe-scale-wrap" style="width:${sw}px;height:${sh}px;"><iframe srcdoc="${escAttr(html)}" style="width:${size.w}px;height:${size.h}px;transform:scale(${scale});transform-origin:0 0;border:1px solid var(--line);" sandbox="allow-same-origin"></iframe></div>`;
       document.getElementById('l5Export').disabled = false;
       document.getElementById('l5Source').textContent = `· ${result.source === 'llm' ? 'LLM 生成' : '本地兜底'}`;
       Store.archiveOutput({
@@ -3024,10 +3027,11 @@ function studioL6(body, ctx) {
         html = `<!doctype html><html><head><meta charset="utf-8"></head><body>${html}</body></html>`;
       }
       lastHtml = html;
-      const wrapWidth = out.clientWidth - 24;
-      const wrapHeight = out.clientHeight - 24;
+      const wrapWidth = Math.max(out.clientWidth - 24, 100);
+      const wrapHeight = Math.max(out.clientHeight - 24, 100);
       const scale = Math.min(wrapWidth / 1600, wrapHeight / 900, 0.6);
-      out.innerHTML = `<iframe srcdoc="${escAttr(html)}" style="width:1600px;height:900px;transform:scale(${scale});transform-origin:center center;border:1px solid var(--line);background:white;" sandbox="allow-same-origin allow-scripts"></iframe>`;
+      const sw = Math.round(1600 * scale), sh = Math.round(900 * scale);
+      out.innerHTML = `<div class="iframe-scale-wrap" style="width:${sw}px;height:${sh}px;"><iframe srcdoc="${escAttr(html)}" style="width:1600px;height:900px;transform:scale(${scale});transform-origin:0 0;border:1px solid var(--line);background:white;" sandbox="allow-same-origin allow-scripts"></iframe></div>`;
       document.getElementById('l6Export').disabled = false;
       document.getElementById('l6Source').textContent = `· ${result.source === 'llm' ? 'LLM 生成' : '本地兜底'}`;
       Store.archiveOutput({
